@@ -2,6 +2,8 @@
 
 header {
   background-color: $accent-dark;
+  color: $white;
+  font-family: 'Lora', sans-serif;
 }
 
 nav {
@@ -11,7 +13,6 @@ nav {
   align-items: center;
   flex-wrap: wrap;
   font-family: 'Lato', sans-serif;
-  color: $white;
 }
 
 .nav-items {

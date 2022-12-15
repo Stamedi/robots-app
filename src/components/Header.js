@@ -6,6 +6,7 @@ const Header = () => {
   return (
     <header>
       <Nav />
+      <h1>Find your hosehold assistant</h1>
     </header>
   );
 };
