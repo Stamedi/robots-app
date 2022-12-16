@@ -4,7 +4,7 @@ import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
 
 const Main = () => {
-  const [robots, setRobots] = useState([
+  const [robots] = useState([
     {
       age: 56,
       rating: 2,
