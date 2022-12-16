@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import search from '../assets/images/search_off.svg';
 import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
@@ -11,7 +11,7 @@ const Main = () => {
     Mopping: false,
     'Window treatment cleaning': false,
   });
-  // const [activeFilters, setActiveFilters] = useState();
+  const [searchFilter, setSearchFilter] = useState('');
   const [robots] = useState([
     {
       age: 56,
@@ -71,6 +71,7 @@ const Main = () => {
   const [filteredRobots, setFilteredRobots] = useState(robots);
 
   const handleSearch = (event) => {
+    setSearchFilter(event.target.value);
     if (event.target.value === '') {
       setFilteredRobots(robots);
       return;
@@ -89,20 +90,33 @@ const Main = () => {
 
   const handleChange = (event) => {
     const { name } = event.target;
-    setFilters({ ...filters, [name]: !filters[name] });
+    setFilters((prevState) => ({ ...prevState, [name]: !prevState[name] }));
+    setFilteredRobots(robots);
+  };
 
+  const clearFilters = () => {
+    setFilters({
+      'Carpet cleaning': false,
+      Sweeping: false,
+      'Deep cleaning': false,
+      Mopping: false,
+      'Window treatment cleaning': false,
+    });
+    setSearchFilter('');
+    setFilteredRobots(robots);
+  };
+
+  useEffect(() => {
     const checkedSkills = Object.entries(filters)
-      .filter((category) => category[1])
-      .map((category) => category[0]);
+      .filter((skill) => skill[1])
+      .map((skill) => skill[0]);
 
     const filterCheckedRobots = filteredRobots.filter((robot) =>
       checkedSkills.every((skill) => robot.skills.includes(skill))
     );
 
     setFilteredRobots(filterCheckedRobots);
-  };
-
-  const clearFilters = () => {};
+  }, [filters]);
 
   // useEffect(() => {
   // const checkedSkills = Object.entries(filters)
@@ -118,12 +132,12 @@ const Main = () => {
 
   return (
     <main>
-      {robots.length === 0 ? (
+      {filteredRobots.length === 0 ? (
         <div className="robots-container">
           <img src={search} alt="search icon" />
           <h3>No results</h3>
           <p>Your selected filters did not match any of the results</p>
-          <button onClick={() => clearFilters()}>Clear All Filters</button>
+          <button onClick={clearFilters}>Clear All Filters</button>
         </div>
       ) : (
         <div className="robots-flex-container">
@@ -151,7 +165,7 @@ const Main = () => {
             <p>By name</p>
             <button>Clear</button>
           </div>
-          <input type="text" placeholder="Name" onChange={handleSearch} />
+          <input type="text" placeholder="Name" value={searchFilter} onChange={handleSearch} />
         </div>
         <div className="skills-container">
           <div>
@@ -185,11 +199,17 @@ const Main = () => {
             <label htmlFor="3">Deep cleaning</label>
           </div>
           <div className="skill-container">
-            <input id="4" type="checkbox" name="Mopping" onChange={handleChange} />
+            <input id="4" type="checkbox" name="Mopping" checked={filters.Mopping} onChange={handleChange} />
             <label htmlFor="4">Mopping</label>
           </div>
           <div className="skill-container">
-            <input id="5" type="checkbox" name="Window treatment cleaning" onChange={handleChange} />
+            <input
+              id="5"
+              type="checkbox"
+              name="Window treatment cleaning"
+              checked={filters['Window treatment cleaning']}
+              onChange={handleChange}
+            />
             <label htmlFor="5">Window treatment cleaning</label>
           </div>
         </div>
@@ -206,7 +226,7 @@ const Main = () => {
           </div>
           <input type="text" placeholder="Available from" />
         </div>
-        <button>Clear all filters</button>
+        <button onClick={clearFilters}>Clear all filters</button>
       </div>
     </main>
   );
