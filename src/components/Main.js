@@ -4,6 +4,14 @@ import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
 
 const Main = () => {
+  const [filters, setFilters] = useState([
+    'Carpet cleaning',
+    'Sweeping',
+    'Deep cleaning',
+    'Mopping',
+    'Window treatment cleaning',
+  ]);
+  const [activeFilters, setActiveFilters] = useState();
   const [robots] = useState([
     {
       age: 56,
@@ -60,6 +68,22 @@ const Main = () => {
       id: 3,
     },
   ]);
+  const [filteredRobots, setFilteredRobots] = useState(robots);
+
+  const handleSearch = (event) => {
+    if (event.target.value === '') {
+      setFilteredRobots(robots);
+      return;
+    }
+
+    const filteredValues = robots.filter(
+      (robot) => robot.firstName.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1
+    );
+    setFilteredRobots(filteredValues);
+  };
+
+  const clearFilters = () => {};
+
   return (
     <main>
       {robots.length === 0 ? (
@@ -67,11 +91,11 @@ const Main = () => {
           <img src={search} alt="search icon" />
           <h3>No results</h3>
           <p>Your selected filters did not match any of the results</p>
-          <button>Clear All Filters</button>
+          <button onClick={() => clearFilters()}>Clear All Filters</button>
         </div>
       ) : (
         <div className="robots-flex-container">
-          {robots.map((robot) => (
+          {filteredRobots.map((robot) => (
             <div className="card-container">
               <div className="card-img-container">
                 <img src={robot.images.thumbnail} alt="" />
@@ -91,7 +115,7 @@ const Main = () => {
       )}
       <div className="sidebar-container">
         <p>By name</p>
-        <input type="text" placeholder="Name" />
+        <input type="text" placeholder="Name" onChange={handleSearch} />
         <div className="skills-container">
           <p>By skills</p>
           <div className="skill-container">
