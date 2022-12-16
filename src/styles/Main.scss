@@ -1,0 +1,30 @@
+@import './variables/main.scss';
+
+main {
+  display: flex;
+  //   flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  padding-top: 100px;
+}
+
+.robots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.skills-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
