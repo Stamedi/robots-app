@@ -12,11 +12,10 @@ const Main = () => {
         <button>Clear All Filters</button>
       </div>
       <div className="sidebar-container">
-        <label htmlFor="">
-          By name
-          <input type="text" />
-        </label>
+        <p>By name</p>
+        <input type="text" />
         <div className="skills-container">
+          <p>By skills</p>
           <div className="skill-container">
             <input id="1" type="checkbox" name="Carpet cleaning" />
             <label htmlFor="1">Carpet cleaning</label>
@@ -37,6 +36,13 @@ const Main = () => {
             <input id="5" type="checkbox" name="Window treatment cleaning" />
             <label htmlFor="5">Window treatment cleaning</label>
           </div>
+        </div>
+        <div className="rating-container">
+          <p>By rating</p>
+          <h3>.. .. .. .. ..</h3>
+        </div>
+        <div className="availability-container">
+          <input type="text" placeholder="Available from" />
         </div>
       </div>
     </main>
