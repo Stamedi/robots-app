@@ -4,14 +4,14 @@ import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
 
 const Main = () => {
-  const [filters, setFilters] = useState([
-    'Carpet cleaning',
-    'Sweeping',
-    'Deep cleaning',
-    'Mopping',
-    'Window treatment cleaning',
-  ]);
-  const [activeFilters, setActiveFilters] = useState();
+  const [filters, setFilters] = useState({
+    'Carpet cleaning': false,
+    Sweeping: false,
+    'Deep cleaning': false,
+    Mopping: false,
+    'Window treatment cleaning': false,
+  });
+  // const [activeFilters, setActiveFilters] = useState();
   const [robots] = useState([
     {
       age: 56,
@@ -82,7 +82,39 @@ const Main = () => {
     setFilteredRobots(filteredValues);
   };
 
+  // const handleChange = (event) => {
+  //   console.log(event.target.checked);
+  //   console.log(event.target.name);
+  // };
+
+  const handleChange = (event) => {
+    const { name } = event.target;
+    setFilters({ ...filters, [name]: !filters[name] });
+
+    const checkedSkills = Object.entries(filters)
+      .filter((category) => category[1])
+      .map((category) => category[0]);
+
+    const filterCheckedRobots = filteredRobots.filter((robot) =>
+      checkedSkills.every((skill) => robot.skills.includes(skill))
+    );
+
+    setFilteredRobots(filterCheckedRobots);
+  };
+
   const clearFilters = () => {};
+
+  // useEffect(() => {
+  // const checkedSkills = Object.entries(filters)
+  //   .filter((category) => category[1])
+  //   .map((category) => category[0]);
+
+  // const filterCheckedRobots = filteredRobots.filter((robot) =>
+  //   checkedSkills.every((skill) => robot.skills.includes(skill))
+  // );
+  // setFilteredRobots(filterCheckedRobots);
+  // console.log(filteredRobots)
+  // }, [filters, filteredRobots]);
 
   return (
     <main>
@@ -96,7 +128,7 @@ const Main = () => {
       ) : (
         <div className="robots-flex-container">
           {filteredRobots.map((robot) => (
-            <div className="card-container">
+            <div className="card-container" key={robot.id}>
               <div className="card-img-container">
                 <img src={robot.images.thumbnail} alt="" />
               </div>
@@ -114,38 +146,67 @@ const Main = () => {
         </div>
       )}
       <div className="sidebar-container">
-        <p>By name</p>
-        <input type="text" placeholder="Name" onChange={handleSearch} />
+        <div className="input-container">
+          <div>
+            <p>By name</p>
+            <button>Clear</button>
+          </div>
+          <input type="text" placeholder="Name" onChange={handleSearch} />
+        </div>
         <div className="skills-container">
-          <p>By skills</p>
-          <div className="skill-container">
-            <input id="1" type="checkbox" name="Carpet cleaning" />
-            <label htmlFor="1">Carpet cleaning</label>
+          <div>
+            <p>By skills</p>
+            <button>Clear</button>
           </div>
           <div className="skill-container">
-            <input id="2" type="checkbox" name="Sweeping" />
+            <input
+              id="1"
+              type="checkbox"
+              name="Carpet cleaning"
+              checked={filters['Carpet cleaning']}
+              onChange={handleChange}
+            />
+            <label htmlFor="1" onChange={handleChange}>
+              Carpet cleaning
+            </label>
+          </div>
+          <div className="skill-container">
+            <input id="2" type="checkbox" name="Sweeping" checked={filters.Sweeping} onChange={handleChange} />
             <label htmlFor="2">Sweeping</label>
           </div>
           <div className="skill-container">
-            <input id="3" type="checkbox" name="Deep cleaning" />
+            <input
+              id="3"
+              type="checkbox"
+              name="Deep cleaning"
+              checked={filters['Deep cleaning']}
+              onChange={handleChange}
+            />
             <label htmlFor="3">Deep cleaning</label>
           </div>
           <div className="skill-container">
-            <input id="4" type="checkbox" name="Mopping" />
+            <input id="4" type="checkbox" name="Mopping" onChange={handleChange} />
             <label htmlFor="4">Mopping</label>
           </div>
           <div className="skill-container">
-            <input id="5" type="checkbox" name="Window treatment cleaning" />
+            <input id="5" type="checkbox" name="Window treatment cleaning" onChange={handleChange} />
             <label htmlFor="5">Window treatment cleaning</label>
           </div>
         </div>
         <div className="rating-container">
-          <p>By rating</p>
+          <div>
+            <p>By rating</p>
+            <button>Clear</button>
+          </div>
           <h3>.. .. .. .. ..</h3>
         </div>
         <div className="availability-container">
+          <div>
+            <p>By availability</p> <button>Clear</button>
+          </div>
           <input type="text" placeholder="Available from" />
         </div>
+        <button>Clear all filters</button>
       </div>
     </main>
   );
