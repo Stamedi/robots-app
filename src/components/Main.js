@@ -99,13 +99,21 @@ const Main = () => {
   // };
 
   const handleChange = (event) => {
-    const { name } = event.target;
-    if (filters.includes(name)) {
-      const findIndex = filters.indexOf(name);
-      console.log(filters.splice(findIndex, 1));
+    // const { name } = event.target;
+    // if (filters.includes(name)) {
+    //   const findIndex = filters.indexOf(name);
+    //   console.log(filters.splice(findIndex, 1));
+    // } else {
+    //   setFilters(filters.push(name));
+    // }
+
+    let updatedList = [...filters];
+    if (event.target.checked) {
+      updatedList = [...filters, event.target.name];
     } else {
-      setFilters(filters.push(name));
+      updatedList.splice(filters.indexOf(event.target.name), 1);
     }
+    setFilters(updatedList);
     // setFilters((prevState) => ({ ...prevState, [name]: !prevState[name] }));
     // setFilteredRobots(robots);
   };
