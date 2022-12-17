@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import search from '../assets/images/search_off.svg';
 import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
+import star_filled from '../assets/images/star_filled.svg';
 
 const Main = () => {
   const [filters, setFilters] = useState({
@@ -70,18 +71,26 @@ const Main = () => {
   ]);
   const [filteredRobots, setFilteredRobots] = useState(robots);
 
-  const handleSearch = (event) => {
-    setSearchFilter(event.target.value);
-    if (event.target.value === '') {
-      setFilteredRobots(robots);
-      return;
-    }
+  // const arr = Array.from(Array(robot.rating), (e, i) => {
+  //   <img key={i} src={star} alt="" />;
+  // })
+  // const robotRating = (robot) => {
+  //   Array.from(Array(robot.rating), (e, i) => {
+  //     return i;
+  //   });
+  // };
+  // const handleSearch = (event) => {
+  //   setSearchFilter(event.target.value);
+  //   if (event.target.value === '') {
+  //     setFilteredRobots(robots);
+  //     return;
+  //   }
 
-    const filteredValues = robots.filter(
-      (robot) => robot.firstName.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1
-    );
-    setFilteredRobots(filteredValues);
-  };
+  //   const filteredValues = robots.filter(
+  //     (robot) => robot.firstName.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1
+  //   );
+  //   setFilteredRobots(filteredValues);
+  // };
 
   // const handleChange = (event) => {
   //   console.log(event.target.checked);
@@ -94,7 +103,24 @@ const Main = () => {
     setFilteredRobots(robots);
   };
 
-  const clearFilters = () => {
+  const handleClear = (event) => {
+    const { name } = event.target;
+
+    if (name === 'name') {
+      setSearchFilter('');
+    } else if (name === 'skills') {
+      setFilters({
+        'Carpet cleaning': false,
+        Sweeping: false,
+        'Deep cleaning': false,
+        Mopping: false,
+        'Window treatment cleaning': false,
+      });
+      setFilteredRobots(robots);
+    }
+  };
+
+  const handleClearAll = () => {
     setFilters({
       'Carpet cleaning': false,
       Sweeping: false,
@@ -105,6 +131,18 @@ const Main = () => {
     setSearchFilter('');
     setFilteredRobots(robots);
   };
+
+  useEffect(() => {
+    if (searchFilter === '') {
+      setFilteredRobots(robots);
+      return;
+    }
+
+    const filteredValues = robots.filter(
+      (robot) => robot.firstName.toLowerCase().indexOf(searchFilter.toLowerCase()) !== -1
+    );
+    setFilteredRobots(filteredValues);
+  }, [searchFilter]);
 
   useEffect(() => {
     const checkedSkills = Object.entries(filters)
@@ -137,7 +175,7 @@ const Main = () => {
           <img src={search} alt="search icon" />
           <h3>No results</h3>
           <p>Your selected filters did not match any of the results</p>
-          <button onClick={clearFilters}>Clear All Filters</button>
+          <button onClick={handleClearAll}>Clear All Filters</button>
         </div>
       ) : (
         <div className="robots-flex-container">
@@ -147,11 +185,15 @@ const Main = () => {
                 <img src={robot.images.thumbnail} alt="" />
               </div>
               <div className="raiting-container">
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
+                {Array.from(Array(5), (e, i) => {
+                  if (i < robot.rating) {
+                    // eslint-disable-next-line jsx-a11y/alt-text
+                    return <img src={star_filled} key={i} />;
+                  } else {
+                    // eslint-disable-next-line jsx-a11y/alt-text
+                    return <img src={star} key={i} />;
+                  }
+                })}
               </div>
               <p>{robot.firstName}</p>
               <button>Learn more</button>
@@ -163,14 +205,23 @@ const Main = () => {
         <div className="input-container">
           <div>
             <p>By name</p>
-            <button>Clear</button>
+            <button name="name" onClick={handleClear}>
+              Clear
+            </button>
           </div>
-          <input type="text" placeholder="Name" value={searchFilter} onChange={handleSearch} />
+          <input
+            type="text"
+            placeholder="Name"
+            value={searchFilter}
+            onChange={(event) => setSearchFilter(event.target.value)}
+          />
         </div>
         <div className="skills-container">
           <div>
             <p>By skills</p>
-            <button>Clear</button>
+            <button name="skills" onClick={handleClear}>
+              Clear
+            </button>
           </div>
           <div className="skill-container">
             <input
@@ -226,10 +277,20 @@ const Main = () => {
           </div>
           <input type="text" placeholder="Available from" />
         </div>
-        <button onClick={clearFilters}>Clear all filters</button>
+        <button onClick={handleClearAll}>Clear all filters</button>
       </div>
     </main>
   );
 };
 
 export default Main;
+
+{
+  /* <div className="raiting-container">
+                <img src={star} alt="" />
+                <img src={star} alt="" />
+                <img src={star} alt="" />
+                <img src={star} alt="" />
+                <img src={star} alt="" />
+              </div> */
+}
