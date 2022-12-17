@@ -5,13 +5,14 @@ import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
 
 const Main = () => {
-  const [filters, setFilters] = useState({
-    'Carpet cleaning': false,
-    Sweeping: false,
-    'Deep cleaning': false,
-    Mopping: false,
-    'Window treatment cleaning': false,
-  });
+  // const [filters, setFilters] = useState({
+  //   'Carpet cleaning': false,
+  //   Sweeping: false,
+  //   'Deep cleaning': false,
+  //   Mopping: false,
+  //   'Window treatment cleaning': false,
+  // });
+  const [filters, setFilters] = useState([]);
   const [searchFilter, setSearchFilter] = useState('');
   const [robots] = useState([
     {
@@ -99,9 +100,17 @@ const Main = () => {
 
   const handleChange = (event) => {
     const { name } = event.target;
-    setFilters((prevState) => ({ ...prevState, [name]: !prevState[name] }));
-    setFilteredRobots(robots);
+    if (filters.includes(name)) {
+      const findIndex = filters.indexOf(name);
+      console.log(filters.splice(findIndex, 1));
+    } else {
+      setFilters(filters.push(name));
+    }
+    // setFilters((prevState) => ({ ...prevState, [name]: !prevState[name] }));
+    // setFilteredRobots(robots);
   };
+
+  console.log(filters);
 
   const handleClear = (event) => {
     const { name } = event.target;
@@ -135,26 +144,27 @@ const Main = () => {
   useEffect(() => {
     if (searchFilter === '') {
       setFilteredRobots(robots);
-      return;
     }
 
-    const filteredValues = robots.filter(
+    const filteredValues = filteredRobots.filter(
       (robot) => robot.firstName.toLowerCase().indexOf(searchFilter.toLowerCase()) !== -1
     );
     setFilteredRobots(filteredValues);
   }, [searchFilter]);
 
-  useEffect(() => {
-    const checkedSkills = Object.entries(filters)
-      .filter((skill) => skill[1])
-      .map((skill) => skill[0]);
+  // useEffect(() => {
+  //   // const checkedSkills = Object.entries(filters)
+  //   //   .filter((skill) => skill[1])
+  //   //   .map((skill) => skill[0]);
 
-    const filterCheckedRobots = filteredRobots.filter((robot) =>
-      checkedSkills.every((skill) => robot.skills.includes(skill))
-    );
+  //   const checkedSkills = filters.filter((skill) => !skill === true);
+  //   console.log(checkedSkills);
+  //   const filterCheckedRobots = filteredRobots.filter((robot) =>
+  //     checkedSkills.every((skill) => robot.skills.includes(skill))
+  //   );
 
-    setFilteredRobots(filterCheckedRobots);
-  }, [filters]);
+  //   setFilteredRobots(filterCheckedRobots);
+  // }, [filters]);
 
   // useEffect(() => {
   // const checkedSkills = Object.entries(filters)
@@ -228,7 +238,7 @@ const Main = () => {
               id="1"
               type="checkbox"
               name="Carpet cleaning"
-              checked={filters['Carpet cleaning']}
+              // checked={filters['Carpet cleaning']}
               onChange={handleChange}
             />
             <label htmlFor="1" onChange={handleChange}>
