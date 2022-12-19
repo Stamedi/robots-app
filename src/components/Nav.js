@@ -1,5 +1,6 @@
 import React from 'react';
 import white_horizontal_logo from '../assets/images/white_horizontal_logo.png';
+import cart from '../assets/images/cart.svg';
 import '../styles/Header.scss';
 
 const Nav = () => {
@@ -14,7 +15,9 @@ const Nav = () => {
           <li>COMPANY</li>
           <li>CONTACTS</li>
         </ul>
-        <button>Cart</button>
+        <button className="cart-btn-container">
+          <img src={cart} alt="cart" /> Cart
+        </button>
       </div>
     </nav>
   );

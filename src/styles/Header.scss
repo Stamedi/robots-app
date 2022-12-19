@@ -59,6 +59,31 @@ nav {
       padding-right: 24px;
     }
   }
+
+  button {
+    width: 83px;
+    height: 32px;
+    color: $white;
+    background-color: transparent;
+    border-radius: 99px;
+    border: 2px solid $white;
+  }
+}
+
+.cart-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: $lato-font;
+  img {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .nav-item-green {
