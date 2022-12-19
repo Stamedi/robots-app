@@ -5,14 +5,16 @@ import '../styles/Header.scss';
 const Nav = () => {
   return (
     <nav>
-      <img src={white_horizontal_logo} alt="logo" />
+      <div className="logo-container">
+        <img src={white_horizontal_logo} alt="logo" />
+      </div>
       <div className="nav-items">
         <ul>
-          <li>ROBOTS</li>
+          <li className="nav-item-green">ROBOTS</li>
           <li>COMPANY</li>
           <li>CONTACTS</li>
         </ul>
-        <button>Card</button>
+        <button>Cart</button>
       </div>
     </nav>
   );

@@ -5,8 +5,12 @@ import '../styles/Header.scss';
 const Header = () => {
   return (
     <header>
-      <Nav />
-      <h1>Find your hosehold assistant</h1>
+      <div className="inner-container">
+        <Nav />
+        <h1>
+          Find your <br /> household assistant
+        </h1>
+      </div>
     </header>
   );
 };

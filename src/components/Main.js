@@ -5,14 +5,15 @@ import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
 
 const Main = () => {
-  // const [filters, setFilters] = useState({
-  //   'Carpet cleaning': false,
-  //   Sweeping: false,
-  //   'Deep cleaning': false,
-  //   Mopping: false,
-  //   'Window treatment cleaning': false,
-  // });
-  const [filters, setFilters] = useState([]);
+  const [checkboxes] = useState([
+    { id: '1', name: 'Carpet cleaning' },
+    { id: '2', name: 'Sweeping' },
+    { id: '3', name: 'Deep cleaning' },
+    { id: '4', name: 'Mopping' },
+    { id: '5', name: 'Window treatment cleaning' },
+  ]);
+  // const [filters, setFilters] = useState([]);
+  const [checkedFilter, setCheckedFilter] = useState([]);
   const [searchFilter, setSearchFilter] = useState('');
   const [robots] = useState([
     {
@@ -72,53 +73,21 @@ const Main = () => {
   ]);
   const [filteredRobots, setFilteredRobots] = useState(robots);
 
-  // const arr = Array.from(Array(robot.rating), (e, i) => {
-  //   <img key={i} src={star} alt="" />;
-  // })
-  // const robotRating = (robot) => {
-  //   Array.from(Array(robot.rating), (e, i) => {
-  //     return i;
-  //   });
-  // };
-  // const handleSearch = (event) => {
-  //   setSearchFilter(event.target.value);
-  //   if (event.target.value === '') {
-  //     setFilteredRobots(robots);
-  //     return;
-  //   }
-
-  //   const filteredValues = robots.filter(
-  //     (robot) => robot.firstName.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1
-  //   );
-  //   setFilteredRobots(filteredValues);
-  // };
-
-  // const handleChange = (event) => {
-  //   console.log(event.target.checked);
-  //   console.log(event.target.name);
-  // };
-
-  const handleChange = (event) => {
-    // const { name } = event.target;
-    // if (filters.includes(name)) {
-    //   const findIndex = filters.indexOf(name);
-    //   console.log(filters.splice(findIndex, 1));
-    // } else {
-    //   setFilters(filters.push(name));
-    // }
-
-    let updatedList = [...filters];
-    if (event.target.checked) {
-      updatedList = [...filters, event.target.name];
-    } else {
-      updatedList.splice(filters.indexOf(event.target.name), 1);
-    }
-    setFilters(updatedList);
-    // setFilters((prevState) => ({ ...prevState, [name]: !prevState[name] }));
-    // setFilteredRobots(robots);
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setSearchFilter(event.target.value);
   };
 
-  console.log(filters);
+  const handleChange = (event) => {
+    let updatedList = [...checkedFilter];
+    if (event.target.checked) {
+      updatedList = [...checkedFilter, event.target.name];
+    } else {
+      updatedList.splice(checkedFilter.indexOf(event.target.name), 1);
+    }
+
+    setCheckedFilter(updatedList);
+  };
 
   const handleClear = (event) => {
     const { name } = event.target;
@@ -126,39 +95,53 @@ const Main = () => {
     if (name === 'name') {
       setSearchFilter('');
     } else if (name === 'skills') {
-      setFilters({
-        'Carpet cleaning': false,
-        Sweeping: false,
-        'Deep cleaning': false,
-        Mopping: false,
-        'Window treatment cleaning': false,
-      });
+      // setFilters({
+      //   'Carpet cleaning': false,
+      //   Sweeping: false,
+      //   'Deep cleaning': false,
+      //   Mopping: false,
+      //   'Window treatment cleaning': false,
+      // });
       setFilteredRobots(robots);
     }
   };
 
   const handleClearAll = () => {
-    setFilters({
-      'Carpet cleaning': false,
-      Sweeping: false,
-      'Deep cleaning': false,
-      Mopping: false,
-      'Window treatment cleaning': false,
-    });
+    setCheckedFilter([]);
     setSearchFilter('');
     setFilteredRobots(robots);
   };
 
   useEffect(() => {
-    if (searchFilter === '') {
+    // if (searchFilter === '') {
+    //   setFilteredRobots(robots);
+    // }
+
+    if (searchFilter.length > 0) {
+      const filteredItems = filteredRobots.filter((robot) => {
+        return robot.firstName.match(searchFilter);
+      });
+      setFilteredRobots(filteredItems);
+    } else {
       setFilteredRobots(robots);
     }
 
-    const filteredValues = filteredRobots.filter(
-      (robot) => robot.firstName.toLowerCase().indexOf(searchFilter.toLowerCase()) !== -1
-    );
-    setFilteredRobots(filteredValues);
+    // const filteredValues = filteredRobots.filter(
+    //   (robot) => robot.firstName.toLowerCase().indexOf(searchFilter.toLowerCase()) !== -1
+    // );
+    // setFilteredRobots(filteredValues);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchFilter]);
+
+  useEffect(() => {
+    if (checkedFilter.length !== 0) {
+      const filteredRobotsArr = robots.filter((robot) => robot.skills.some((skill) => checkedFilter.includes(skill)));
+      setFilteredRobots(filteredRobotsArr);
+    } else {
+      setFilteredRobots(robots);
+    }
+  }, [checkedFilter, robots]);
 
   // useEffect(() => {
   //   // const checkedSkills = Object.entries(filters)
@@ -188,114 +171,85 @@ const Main = () => {
 
   return (
     <main>
-      {filteredRobots.length === 0 ? (
-        <div className="robots-container">
-          <img src={search} alt="search icon" />
-          <h3>No results</h3>
-          <p>Your selected filters did not match any of the results</p>
-          <button onClick={handleClearAll}>Clear All Filters</button>
-        </div>
-      ) : (
-        <div className="robots-flex-container">
-          {filteredRobots.map((robot) => (
-            <div className="card-container" key={robot.id}>
-              <div className="card-img-container">
-                <img src={robot.images.thumbnail} alt="" />
+      <div className="inner-container-main">
+        {filteredRobots.length === 0 ? (
+          <div className="robots-container">
+            <img src={search} alt="search icon" />
+            <h3>No results</h3>
+            <p>Your selected filters did not match any of the results</p>
+            <button onClick={handleClearAll}>Clear All Filters</button>
+          </div>
+        ) : (
+          <div className="robots-flex-container">
+            {filteredRobots.map((robot) => (
+              <div className="card-container" key={robot.id}>
+                <div className="card-img-container">
+                  <img src={robot.images.thumbnail} alt="" />
+                </div>
+                <div className="raiting-container">
+                  {Array.from(Array(5), (e, i) => {
+                    if (i < robot.rating) {
+                      // eslint-disable-next-line jsx-a11y/alt-text
+                      return <img src={star_filled} key={i} />;
+                    } else {
+                      // eslint-disable-next-line jsx-a11y/alt-text
+                      return <img src={star} key={i} />;
+                    }
+                  })}
+                </div>
+                <h5>{robot.firstName}</h5>
+                <button>Learn more</button>
               </div>
-              <div className="raiting-container">
-                {Array.from(Array(5), (e, i) => {
-                  if (i < robot.rating) {
-                    // eslint-disable-next-line jsx-a11y/alt-text
-                    return <img src={star_filled} key={i} />;
-                  } else {
-                    // eslint-disable-next-line jsx-a11y/alt-text
-                    return <img src={star} key={i} />;
-                  }
-                })}
+            ))}
+          </div>
+        )}
+        <div className="sidebar-container">
+          <div className="inner-sidebar-container">
+            <div className="input-container">
+              <div className="flex-clear">
+                <p>By name</p>
+                <button name="name" onClick={handleClear}>
+                  Clear
+                </button>
               </div>
-              <p>{robot.firstName}</p>
-              <button>Learn more</button>
+              <input type="text" placeholder="Name" value={searchFilter} onChange={handleSearch} />
             </div>
-          ))}
-        </div>
-      )}
-      <div className="sidebar-container">
-        <div className="input-container">
-          <div>
-            <p>By name</p>
-            <button name="name" onClick={handleClear}>
-              Clear
-            </button>
-          </div>
-          <input
-            type="text"
-            placeholder="Name"
-            value={searchFilter}
-            onChange={(event) => setSearchFilter(event.target.value)}
-          />
-        </div>
-        <div className="skills-container">
-          <div>
-            <p>By skills</p>
-            <button name="skills" onClick={handleClear}>
-              Clear
-            </button>
-          </div>
-          <div className="skill-container">
-            <input
-              id="1"
-              type="checkbox"
-              name="Carpet cleaning"
-              // checked={filters['Carpet cleaning']}
-              onChange={handleChange}
-            />
-            <label htmlFor="1" onChange={handleChange}>
-              Carpet cleaning
-            </label>
-          </div>
-          <div className="skill-container">
-            <input id="2" type="checkbox" name="Sweeping" checked={filters.Sweeping} onChange={handleChange} />
-            <label htmlFor="2">Sweeping</label>
-          </div>
-          <div className="skill-container">
-            <input
-              id="3"
-              type="checkbox"
-              name="Deep cleaning"
-              checked={filters['Deep cleaning']}
-              onChange={handleChange}
-            />
-            <label htmlFor="3">Deep cleaning</label>
-          </div>
-          <div className="skill-container">
-            <input id="4" type="checkbox" name="Mopping" checked={filters.Mopping} onChange={handleChange} />
-            <label htmlFor="4">Mopping</label>
-          </div>
-          <div className="skill-container">
-            <input
-              id="5"
-              type="checkbox"
-              name="Window treatment cleaning"
-              checked={filters['Window treatment cleaning']}
-              onChange={handleChange}
-            />
-            <label htmlFor="5">Window treatment cleaning</label>
+            <div className="skills-container">
+              <div className="flex-clear">
+                <p>By skills</p>
+                <button name="skills" onClick={handleClear}>
+                  Clear
+                </button>
+              </div>
+              {checkboxes.map(({ id, name, value }) => (
+                <div key={id} className="skill-container">
+                  <input id={id} type="checkbox" name={name} onChange={handleChange} />
+                  <label htmlFor={id} onChange={handleChange}>
+                    {name}
+                  </label>
+                </div>
+              ))}
+            </div>
+            <div className="rating-container">
+              <div className="flex-clear">
+                <p>By rating</p>
+                <button>Clear</button>
+              </div>
+              <h3>.. .. .. .. ..</h3>
+            </div>
+            <div className="availability-container">
+              <div className="flex-clear">
+                <p>By availability</p> <button>Clear</button>
+              </div>
+              <div className="date-input-cont">
+                <input type="text" placeholder="Available from" />
+              </div>
+            </div>
+            <div className="clear-all-btn-cont">
+              <button onClick={handleClearAll}>Clear all filters</button>
+            </div>
           </div>
         </div>
-        <div className="rating-container">
-          <div>
-            <p>By rating</p>
-            <button>Clear</button>
-          </div>
-          <h3>.. .. .. .. ..</h3>
-        </div>
-        <div className="availability-container">
-          <div>
-            <p>By availability</p> <button>Clear</button>
-          </div>
-          <input type="text" placeholder="Available from" />
-        </div>
-        <button onClick={handleClearAll}>Clear all filters</button>
       </div>
     </main>
   );
@@ -303,12 +257,35 @@ const Main = () => {
 
 export default Main;
 
-{
-  /* <div className="raiting-container">
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-                <img src={star} alt="" />
-              </div> */
-}
+/* <div className="skill-container">
+            <input id="1" type="checkbox" name="Carpet cleaning" onChange={handleChange} />
+            <label htmlFor="1" onChange={handleChange}>
+              Carpet cleaning
+            </label>
+          </div>
+          <div className="skill-container">
+            <input id="2" type="checkbox" name="Sweeping" onChange={handleChange} />
+            <label htmlFor="2">Sweeping</label>
+          </div>
+          <div className="skill-container">
+            <input id="3" type="checkbox" name="Deep cleaning" onChange={handleChange} />
+            <label htmlFor="3">Deep cleaning</label>
+          </div>
+          <div className="skill-container">
+            <input id="4" type="checkbox" name="Mopping" onChange={handleChange} />
+            <label htmlFor="4">Mopping</label>
+          </div>
+          <div className="skill-container">
+            <input id="5" type="checkbox" name="Window treatment cleaning" onChange={handleChange} />
+            <label htmlFor="5">Window treatment cleaning</label>
+          </div> */
+
+// useEffect(() => {
+//   const fetchData = async () => {
+//     let res = await fetch('http://localhost:3000/data-v2.json');
+//     let final = res.json();
+//     let promise = Promise.resolve(final);
+//     promise.then((res) => setRobots(res));
+//   };
+//   fetchData();
+// }, []);

@@ -3,9 +3,19 @@
 header {
   background-color: $accent-dark;
   color: $white;
-  font-family: 'Lora', sans-serif;
+  font-family: $lora-font;
   width: 100%;
   height: 310px;
+}
+
+.inner-container {
+  padding: 0 160px;
+
+  h1 {
+    padding-top: 40px;
+    font-size: 48px;
+    max-width: 544px;
+  }
 }
 
 nav {
@@ -14,17 +24,43 @@ nav {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  font-family: 'Lato', sans-serif;
+  font-family: $lato-font;
+  padding: 24px 0;
 }
+
+.logo-container {
+  max-width: 204px;
+  // height: auto;
+  img {
+    width: 100%;
+  }
+}
+
+// .image-container {
+//   width:300px;
+//   height:150px;
+//   text-align:center;
+// }
+
+// .image-container img {
+//   height:100%;
+// }
 
 .nav-items {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-
+  font-size: 14px;
   ul {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
+    li {
+      padding-right: 24px;
+    }
   }
+}
+
+.nav-item-green {
+  color: $green;
 }

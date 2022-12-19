@@ -1,10 +1,13 @@
 @import './variables/main.scss';
 
 main {
+  padding: 0 160px;
+}
+
+.inner-container-main {
   display: flex;
-  //   flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
+  // flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: space-evenly;
   padding-top: 100px;
   width: 100%;
@@ -19,9 +22,56 @@ main {
 }
 
 .sidebar-container {
+  max-width: 256px;
+  margin-left: 30px;
+  border: 1px solid #f3f3f3;
+  border-radius: 8px;
+}
+
+.inner-sidebar-container {
+  margin: 24px;
+  // display: flex;
+  // flex-direction: column;
+  // flex-wrap: wrap;
+}
+
+.flex-clear {
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  font-family: $lato-font;
+  p {
+    font-size: 14px;
+    color: rgba(19, 19, 19, 0.4);
+  }
+  button {
+    color: $red;
+    background-color: transparent;
+    border: none;
+  }
+}
+
+.input-container,
+.date-input-cont {
+  input {
+    max-width: 100%;
+    font-family: $lato-font;
+    font-weight: 400;
+    font-size: 16px;
+    border: 1px solid rgba(19, 19, 19, 0.2);
+    border-radius: 99px;
+    padding-left: 24px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: $neutral-white;
+    margin-top: 8px;
+    outline: none;
+  }
+}
+
+.skills-container,
+.rating-container,
+.availability-container {
+  margin-top: 24px;
 }
 
 .skills-container {
@@ -30,12 +80,31 @@ main {
   flex-wrap: wrap;
 }
 
+.skill-container {
+  margin-top: 8px;
+}
+
+.clear-all-btn-cont {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  button {
+    color: $blue;
+    border: none;
+    background-color: transparent;
+    font-family: $lato-font;
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+
 .robots-flex-container {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  // max-width: 900px;
 }
 
 .card-container {
@@ -45,8 +114,50 @@ main {
   flex-direction: column;
   align-items: center;
   margin-left: 30px;
+  margin-bottom: 30px;
+  width: 256px;
+  transition: 0.4s;
+  &:hover {
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.11);
+  }
+  h5 {
+    font-weight: 700;
+    font-size: 23px;
+    font-family: $lora-font;
+    margin-top: 8px;
+  }
+  button {
+    font-family: $lato-font;
+    color: $white;
+    background-color: $blue;
+    border: none;
+    width: 102px;
+    height: 32px;
+    border-radius: 99px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    transition: 0.3s;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $green;
+    }
+  }
+}
+
+.raiting-container {
+  margin-top: 24px;
+  img {
+    margin-left: 5px;
+  }
 }
 
 .card-img-container {
   background-color: $neutral-white;
+  img {
+    height: 100%;
+    width: 100%;
+  }
 }
