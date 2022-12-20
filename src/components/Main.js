@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import search from '../assets/images/search_off.svg';
 import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
+import data from '../data/data-v2.json';
 
 const Main = () => {
-  const [checkboxes] = useState([
-    { id: '1', name: 'Carpet cleaning' },
-    { id: '2', name: 'Sweeping' },
-    { id: '3', name: 'Deep cleaning' },
-    { id: '4', name: 'Mopping' },
-    { id: '5', name: 'Window treatment cleaning' },
+  const [checkboxes, setCheckboxes] = useState([
+    { id: '1', name: 'Carpet cleaning', checked: false },
+    { id: '2', name: 'Sweeping', checked: false },
+    { id: '3', name: 'Deep cleaning', checked: false },
+    { id: '4', name: 'Mopping', checked: false },
+    { id: '5', name: 'Window treatment cleaning', checked: false },
   ]);
   // const [filters, setFilters] = useState([]);
   const [checkedFilter, setCheckedFilter] = useState([]);
   const [searchFilter, setSearchFilter] = useState('');
+  const [showMoreSidebar, setShowMoreSidebar] = useState(false)
   const [robots] = useState([
     {
       age: 56,
@@ -72,6 +74,7 @@ const Main = () => {
     },
   ]);
   const [filteredRobots, setFilteredRobots] = useState(robots);
+  const ref = useRef(null)
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -79,6 +82,19 @@ const Main = () => {
   };
 
   const handleChange = (event) => {
+    setCheckboxes(prevState => {
+      return prevState.map((checkbox) => {
+        if (checkbox.name === event.target.name) {
+          return {
+            ...checkbox,
+            checked: !checkbox.checked,
+          };
+        } else {
+          return {...checkbox}
+        }
+       })
+    } )
+
     let updatedList = [...checkedFilter];
     if (event.target.checked) {
       updatedList = [...checkedFilter, event.target.name];
@@ -95,18 +111,14 @@ const Main = () => {
     if (name === 'name') {
       setSearchFilter('');
     } else if (name === 'skills') {
-      // setFilters({
-      //   'Carpet cleaning': false,
-      //   Sweeping: false,
-      //   'Deep cleaning': false,
-      //   Mopping: false,
-      //   'Window treatment cleaning': false,
-      // });
+      setCheckboxes(checkboxes.map((checkbox) => { return {...checkbox, checked: false}}))
       setFilteredRobots(robots);
     }
   };
 
-  const handleClearAll = () => {
+  const handleClearAll = () => 
+  {
+    setCheckboxes(checkboxes.map((checkbox) => { return {...checkbox, checked: false}}))
     setCheckedFilter([]);
     setSearchFilter('');
     setFilteredRobots(robots);
@@ -208,7 +220,7 @@ const Main = () => {
             <div className="input-container">
               <div className="flex-clear">
                 <p>By name</p>
-                <button name="name" onClick={handleClear}>
+                <button className={searchFilter.length > 0 ? 'btn-display-flex' : 'btn-display-none'} name="name" onClick={handleClear}>
                   Clear
                 </button>
               </div>
@@ -221,14 +233,16 @@ const Main = () => {
                   Clear
                 </button>
               </div>
-              {checkboxes.map(({ id, name, value }) => (
+              {checkboxes.map(({ id, name, checked }) => (
                 <div key={id} className="skill-container">
-                  <input id={id} type="checkbox" name={name} onChange={handleChange} />
-                  <label htmlFor={id} onChange={handleChange}>
+                  <input id={id} type="checkbox" name={name} onChange={handleChange} checked={checked} />
+                  <label htmlFor={id}>
                     {name}
                   </label>
                 </div>
               ))}
+              <div>
+              </div>
             </div>
             <div className="rating-container">
               <div className="flex-clear">
@@ -287,5 +301,14 @@ export default Main;
 //     let promise = Promise.resolve(final);
 //     promise.then((res) => setRobots(res));
 //   };
+//   fetchData();
+// }, []);
+
+// useEffect(() => {
+//   const fetchData = async () => {
+//     let promise = Promise.resolve(data.json);
+//     promise.then((res) => setRobots(res));
+//   };
+
 //   fetchData();
 // }, []);

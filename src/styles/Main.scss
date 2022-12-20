@@ -47,7 +47,19 @@ main {
     color: $red;
     background-color: transparent;
     border: none;
+
+    &:hover {
+      cursor:pointer;
+    }
   }
+}
+
+.btn-display-flex {
+  display: flex;
+}
+
+.btn-display-none {
+  display: none;
 }
 
 .input-container,
@@ -84,14 +96,14 @@ main {
   margin-top: 8px;
   display: flex;
   align-items: center;
-  input[type='checkbox'] {
-    appearance: none;
-    background-color: #fff;
-    width: 18px;
-    height: 18px;
-    border: 0.15em solid $black;
-    border-radius: 0.15em;
-  }
+  // input[type='checkbox'] {
+  //   appearance: none;
+  //   background-color: #fff;
+  //   width: 18px;
+  //   height: 18px;
+  //   border: 0.15em solid $black;
+  //   border-radius: 0.15em;
+  // }
 
   label {
     font-weight: 400;
@@ -111,6 +123,10 @@ main {
     font-family: $lato-font;
     font-weight: 600;
     font-size: 14px;
+
+    &:hover {
+      cursor:pointer;
+    }
   }
 }
 
