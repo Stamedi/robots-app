@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import search from '../assets/images/search_off.svg';
 import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
-import data from '../data/data-v2.json';
+import arrow_down from '../assets/images/arrow_down.svg';
+import arrow_up from '../assets/images/arrow_up.svg';
+// import data from '../data/data-v2.json';
 
 const Main = () => {
   const [checkboxes, setCheckboxes] = useState([
@@ -12,11 +14,17 @@ const Main = () => {
     { id: '3', name: 'Deep cleaning', checked: false },
     { id: '4', name: 'Mopping', checked: false },
     { id: '5', name: 'Window treatment cleaning', checked: false },
+    { id: '6', name: 'Vacuuming', checked: false },
+    { id: '7', name: 'Dusting', checked: false },
+    { id: '8', name: 'Bathroom and bedroom cleaning', checked: false },
+    { id: '9', name: 'Infection control', checked: false },
+    { id: '10', name: 'Polishing', checked: false },
   ]);
   // const [filters, setFilters] = useState([]);
   const [checkedFilter, setCheckedFilter] = useState([]);
   const [searchFilter, setSearchFilter] = useState('');
-  const [showMoreSidebar, setShowMoreSidebar] = useState(false)
+  const [showAllSidebar, setShowAllSidebar] = useState(false);
+  const [loadMore, setLoadMore] = useState(false);
   const [robots] = useState([
     {
       age: 56,
@@ -74,7 +82,6 @@ const Main = () => {
     },
   ]);
   const [filteredRobots, setFilteredRobots] = useState(robots);
-  const ref = useRef(null)
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -82,7 +89,7 @@ const Main = () => {
   };
 
   const handleChange = (event) => {
-    setCheckboxes(prevState => {
+    setCheckboxes((prevState) => {
       return prevState.map((checkbox) => {
         if (checkbox.name === event.target.name) {
           return {
@@ -90,10 +97,10 @@ const Main = () => {
             checked: !checkbox.checked,
           };
         } else {
-          return {...checkbox}
+          return { ...checkbox };
         }
-       })
-    } )
+      });
+    });
 
     let updatedList = [...checkedFilter];
     if (event.target.checked) {
@@ -111,14 +118,21 @@ const Main = () => {
     if (name === 'name') {
       setSearchFilter('');
     } else if (name === 'skills') {
-      setCheckboxes(checkboxes.map((checkbox) => { return {...checkbox, checked: false}}))
+      setCheckboxes(
+        checkboxes.map((checkbox) => {
+          return { ...checkbox, checked: false };
+        })
+      );
       setFilteredRobots(robots);
     }
   };
 
-  const handleClearAll = () => 
-  {
-    setCheckboxes(checkboxes.map((checkbox) => { return {...checkbox, checked: false}}))
+  const handleClearAll = () => {
+    setCheckboxes(
+      checkboxes.map((checkbox) => {
+        return { ...checkbox, checked: false };
+      })
+    );
     setCheckedFilter([]);
     setSearchFilter('');
     setFilteredRobots(robots);
@@ -138,11 +152,6 @@ const Main = () => {
       setFilteredRobots(robots);
     }
 
-    // const filteredValues = filteredRobots.filter(
-    //   (robot) => robot.firstName.toLowerCase().indexOf(searchFilter.toLowerCase()) !== -1
-    // );
-    // setFilteredRobots(filteredValues);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchFilter]);
 
@@ -155,32 +164,6 @@ const Main = () => {
     }
   }, [checkedFilter, robots]);
 
-  // useEffect(() => {
-  //   // const checkedSkills = Object.entries(filters)
-  //   //   .filter((skill) => skill[1])
-  //   //   .map((skill) => skill[0]);
-
-  //   const checkedSkills = filters.filter((skill) => !skill === true);
-  //   console.log(checkedSkills);
-  //   const filterCheckedRobots = filteredRobots.filter((robot) =>
-  //     checkedSkills.every((skill) => robot.skills.includes(skill))
-  //   );
-
-  //   setFilteredRobots(filterCheckedRobots);
-  // }, [filters]);
-
-  // useEffect(() => {
-  // const checkedSkills = Object.entries(filters)
-  //   .filter((category) => category[1])
-  //   .map((category) => category[0]);
-
-  // const filterCheckedRobots = filteredRobots.filter((robot) =>
-  //   checkedSkills.every((skill) => robot.skills.includes(skill))
-  // );
-  // setFilteredRobots(filterCheckedRobots);
-  // console.log(filteredRobots)
-  // }, [filters, filteredRobots]);
-
   return (
     <main>
       <div className="inner-container-main">
@@ -192,27 +175,32 @@ const Main = () => {
             <button onClick={handleClearAll}>Clear All Filters</button>
           </div>
         ) : (
-          <div className="robots-flex-container">
-            {filteredRobots.map((robot) => (
-              <div className="card-container" key={robot.id}>
-                <div className="card-img-container">
-                  <img src={robot.images.thumbnail} alt="" />
+          <div className="robots-btn-container">
+            <div className="robots-flex-container">
+              {filteredRobots.map((robot) => (
+                <div className="card-container" key={robot.id}>
+                  <div className="card-img-container">
+                    <img src={robot.images.thumbnail} alt="" />
+                  </div>
+                  <div className="raiting-container">
+                    {Array.from(Array(5), (e, i) => {
+                      if (i < robot.rating) {
+                        // eslint-disable-next-line jsx-a11y/alt-text
+                        return <img src={star_filled} key={i} />;
+                      } else {
+                        // eslint-disable-next-line jsx-a11y/alt-text
+                        return <img src={star} key={i} />;
+                      }
+                    })}
+                  </div>
+                  <h5>{robot.firstName}</h5>
+                  <button>Learn more</button>
                 </div>
-                <div className="raiting-container">
-                  {Array.from(Array(5), (e, i) => {
-                    if (i < robot.rating) {
-                      // eslint-disable-next-line jsx-a11y/alt-text
-                      return <img src={star_filled} key={i} />;
-                    } else {
-                      // eslint-disable-next-line jsx-a11y/alt-text
-                      return <img src={star} key={i} />;
-                    }
-                  })}
-                </div>
-                <h5>{robot.firstName}</h5>
-                <button>Learn more</button>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div onClick={() => setLoadMore(!loadMore)} className="load-more-container">
+              <button>Load more</button>
+            </div>
           </div>
         )}
         <div className="sidebar-container">
@@ -220,7 +208,11 @@ const Main = () => {
             <div className="input-container">
               <div className="flex-clear">
                 <p>By name</p>
-                <button className={searchFilter.length > 0 ? 'btn-display-flex' : 'btn-display-none'} name="name" onClick={handleClear}>
+                <button
+                  className={searchFilter.length > 0 ? 'btn-display-flex' : 'btn-display-none'}
+                  name="name"
+                  onClick={handleClear}
+                >
                   Clear
                 </button>
               </div>
@@ -233,15 +225,22 @@ const Main = () => {
                   Clear
                 </button>
               </div>
-              {checkboxes.map(({ id, name, checked }) => (
+              {checkboxes.slice(0, !showAllSidebar ? 4 : undefined).map(({ id, name, checked }) => (
                 <div key={id} className="skill-container">
                   <input id={id} type="checkbox" name={name} onChange={handleChange} checked={checked} />
-                  <label htmlFor={id}>
-                    {name}
-                  </label>
+                  <label htmlFor={id}>{name}</label>
                 </div>
               ))}
-              <div>
+              <div onClick={() => setShowAllSidebar(!showAllSidebar)} className="show-all-container">
+                {!showAllSidebar ? (
+                  <button>
+                    <img src={arrow_down} alt="arrow-down" /> Show all
+                  </button>
+                ) : (
+                  <button>
+                    <img src={arrow_up} alt="arrow-up" /> Show less
+                  </button>
+                )}
               </div>
             </div>
             <div className="rating-container">
