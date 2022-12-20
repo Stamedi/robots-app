@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
 import search from '../assets/images/search_off.svg';
-import '../styles/Main.scss';
 import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
 import arrow_down from '../assets/images/arrow_down.svg';
 import arrow_up from '../assets/images/arrow_up.svg';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/Main.scss';
 // import data from '../data/data-v2.json';
 
 const Main = () => {
@@ -82,6 +84,7 @@ const Main = () => {
     },
   ]);
   const [filteredRobots, setFilteredRobots] = useState(robots);
+  const [startDate, setStartDate] = useState(null);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -255,7 +258,8 @@ const Main = () => {
                 <p>By availability</p> <button>Clear</button>
               </div>
               <div className="date-input-cont">
-                <input type="text" placeholder="Available from" />
+                <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd.MM.yyyy" />
+                {/* <input type="text" placeholder="Available from" /> */}
               </div>
             </div>
             <div className="clear-all-btn-cont">
