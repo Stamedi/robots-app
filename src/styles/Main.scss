@@ -115,7 +115,7 @@ main {
   display: flex;
   align-items: center;
   background: transparent;
-  justify-content: start;
+  justify-content: flex-start;
   border: none;
   margin-top: 8px;
   padding: 0;
@@ -168,7 +168,7 @@ main {
   width: 864px;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 
   img {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
+import ReactModal from 'react-modal';
 import search from '../assets/images/search_off.svg';
 import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
@@ -8,6 +9,8 @@ import arrow_up from '../assets/images/arrow_up.svg';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/Main.scss';
 // import data from '../data/data-v2.json';
+
+ReactModal.setAppElement('#root');
 
 const Main = () => {
   const [checkboxes, setCheckboxes] = useState([
@@ -85,6 +88,7 @@ const Main = () => {
   ]);
   const [filteredRobots, setFilteredRobots] = useState(robots);
   const [startDate, setStartDate] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -169,6 +173,11 @@ const Main = () => {
 
   return (
     <main>
+      <ReactModal isOpen={openModal} onRequestClose={() => setOpenModal(false)}>
+        <h1>Ver nice</h1>
+        <p>ver good</p>
+        <button onClick={() => setOpenModal(false)}>CLOSE MODAL</button>
+      </ReactModal>
       <div className="inner-container-main">
         {filteredRobots.length === 0 ? (
           <div className="robots-container">
@@ -197,7 +206,7 @@ const Main = () => {
                     })}
                   </div>
                   <h5>{robot.firstName}</h5>
-                  <button>Learn more</button>
+                  <button onClick={() => setOpenModal(true)}>Learn more</button>
                 </div>
               ))}
             </div>
