@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import ReactModal from 'react-modal';
 import search from '../assets/images/search_off.svg';
 import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
-import arrow_down from '../assets/images/arrow_down.svg';
-import arrow_up from '../assets/images/arrow_up.svg';
-import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/Main.scss';
-import data from '../data/data-v2.json';
-
-ReactModal.setAppElement('#root');
+import Modal from './Modal';
+import Sidebar from './Sidebar';
+// import data from '../data/data-v2.json';
 
 const Main = () => {
   const [checkboxes, setCheckboxes] = useState([
@@ -30,10 +25,65 @@ const Main = () => {
   const [searchFilter, setSearchFilter] = useState('');
   const [showAllSidebar, setShowAllSidebar] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
-  const [robots, setRobots] = useState([]);
+  const [robots] = useState([
+    {
+      age: 56,
+      rating: 2,
+      firstName: 'Cara',
+      lastName: 'Mccarthy',
+      phone: '(883) 512-2259',
+      email: 'cara.mccarthy@earbang.ca',
+      registered_at: '2014-04-25',
+      available_from: '2021-06-13',
+      description:
+        'Reprehenderit consectetur ullamco aliquip reprehenderit do voluptate. Laborum exercitation nulla reprehenderit minim. Aliquip dolor elit adipisicing consectetur officia. Fugiat commodo id sint esse proident non dolor.',
+      images: {
+        thumbnail: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=256x256',
+        medium: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=327x327',
+      },
+      skills: ['Sweeping', 'Infection control', 'Polishing'],
+      id: 1,
+    },
+    {
+      age: 48,
+      rating: 1,
+      firstName: 'Ayala',
+      lastName: 'Mcclain',
+      phone: '(856) 505-2278',
+      email: 'ayala.mcclain@plexia.biz',
+      registered_at: '2017-02-20',
+      available_from: '2021-07-24',
+      description:
+        'Nulla ipsum aute non elit nisi consequat culpa sit ex laboris proident voluptate. Incididunt enim exercitation fugiat cillum Lorem non non. Laboris fugiat veniam nisi et dolor aliqua proident Lorem. Minim eiusmod fugiat ut minim sint adipisicing.',
+      images: {
+        thumbnail: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=256x256',
+        medium: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=327x327',
+      },
+      skills: ['Vacuuming', 'Deep cleaning', 'Sweeping'],
+      id: 2,
+    },
+    {
+      age: 22,
+      rating: 3,
+      firstName: 'Clements',
+      lastName: 'Mccoy',
+      phone: '(827) 582-2958',
+      email: 'clements.mccoy@pearlessa.me',
+      registered_at: '2018-09-10',
+      available_from: '2021-10-26',
+      description:
+        'Excepteur deserunt commodo dolor Lorem. Et eu pariatur ea ipsum minim nostrud tempor officia. Exercitation labore magna exercitation magna ullamco. Pariatur aliquip proident magna anim.',
+      images: {
+        thumbnail: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=256x256',
+        medium: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=327x327',
+      },
+      skills: ['Vacuuming', 'Deep cleaning', 'Dusting'],
+      id: 3,
+    },
+  ]);
   const [filteredRobots, setFilteredRobots] = useState(robots);
   const [startDate, setStartDate] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState({ value: false, robot: null });
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -90,14 +140,14 @@ const Main = () => {
     setFilteredRobots(robots);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      let promise = Promise.resolve(data);
-      promise.then((res) => setRobots(res));
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     let promise = Promise.resolve(data);
+  //     promise.then((res) => setRobots(res));
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     setFilteredRobots(filteredRobots.sort((a, b) => a.date > b.date));
@@ -108,20 +158,17 @@ const Main = () => {
     //   setFilteredRobots(robots);
     // }
     if (searchFilter.length > 0) {
-      setFilteredRobots(robots.filter((robot) => robot.firstName === searchFilter));
+      setFilteredRobots(robots.filter((robot) => robot.firstName.toLowerCase().includes(searchFilter.toLowerCase())));
     }
     // console.log(searchFilter);
     // if (searchFilter.length > 0) {
     //   if (robots) {
-    //     const filteredItems = robots.filter((robot) => robot.firstName.includes(searchFilter));
-    //     setRobots(filteredItems);
-    //   } else {
-    //     console.log('bot not found');
+    //     const filteredItems = robots.filter((robot) => robot.firstName.match(searchFilter));
+    //     setFilteredRobots(filteredItems);
     //   }
+    // } else {
+    //   setFilteredRobots(robots);
     // }
-    else {
-      setFilteredRobots(robots);
-    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchFilter]);
@@ -136,13 +183,9 @@ const Main = () => {
 
   return (
     <main>
-      <ReactModal isOpen={openModal} onRequestClose={() => setOpenModal(false)}>
-        <h1>Ver nice</h1>
-        <p>ver good</p>
-        <button onClick={() => setOpenModal(false)}>CLOSE MODAL</button>
-      </ReactModal>
+      <Modal openModal={openModal} setOpenModal={setOpenModal} />
       <div className="inner-container-main">
-        {robots.length === 0 ? (
+        {filteredRobots.length === 0 ? (
           <div className="robots-container">
             <img src={search} alt="search icon" />
             <h3>No results</h3>
@@ -169,7 +212,7 @@ const Main = () => {
                     })}
                   </div>
                   <h5>{robot.firstName}</h5>
-                  <button onClick={() => setOpenModal(true)}>Learn more</button>
+                  <button onClick={() => setOpenModal({ value: true, robot: robot })}>Learn more</button>
                 </div>
               ))}
             </div>
@@ -178,67 +221,18 @@ const Main = () => {
             </div>
           </div>
         )}
-        <div className="sidebar-container">
-          <div className="inner-sidebar-container">
-            <div className="input-container">
-              <div className="flex-clear">
-                <p>By name</p>
-                <button
-                  className={searchFilter.length > 0 ? 'btn-display-flex' : 'btn-display-none'}
-                  name="name"
-                  onClick={handleClear}
-                >
-                  Clear
-                </button>
-              </div>
-              <input type="text" placeholder="Name" value={searchFilter} onChange={handleSearch} />
-            </div>
-            <div className="skills-container">
-              <div className="flex-clear">
-                <p>By skills</p>
-                <button name="skills" onClick={handleClear}>
-                  Clear
-                </button>
-              </div>
-              {checkboxes.slice(0, !showAllSidebar ? 4 : undefined).map(({ id, name, checked }) => (
-                <div key={id} className="skill-container">
-                  <input id={id} type="checkbox" name={name} onChange={handleChange} checked={checked} />
-                  <label htmlFor={id}>{name}</label>
-                </div>
-              ))}
-              <div onClick={() => setShowAllSidebar(!showAllSidebar)} className="show-all-container">
-                {!showAllSidebar ? (
-                  <button>
-                    <img src={arrow_down} alt="arrow-down" /> Show all
-                  </button>
-                ) : (
-                  <button>
-                    <img src={arrow_up} alt="arrow-up" /> Show less
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="rating-container">
-              <div className="flex-clear">
-                <p>By rating</p>
-                <button>Clear</button>
-              </div>
-              <h3>.. .. .. .. ..</h3>
-            </div>
-            <div className="availability-container">
-              <div className="flex-clear">
-                <p>By availability</p> <button>Clear</button>
-              </div>
-              <div className="date-input-cont">
-                <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd.MM.yyyy" />
-                {/* <input type="text" placeholder="Available from" /> */}
-              </div>
-            </div>
-            <div className="clear-all-btn-cont">
-              <button onClick={handleClearAll}>Clear all filters</button>
-            </div>
-          </div>
-        </div>
+        <Sidebar
+          searchFilter={searchFilter}
+          showAllSidebar={showAllSidebar}
+          setShowAllSidebar={setShowAllSidebar}
+          handleSearch={handleSearch}
+          handleChange={handleChange}
+          handleClear={handleClear}
+          checkboxes={checkboxes}
+          handleClearAll={handleClearAll}
+          startDate={startDate}
+          setStartDate={setStartDate}
+        />
       </div>
     </main>
   );
@@ -289,58 +283,58 @@ export default Main;
 // }, []);
 
 // [
-//   {
-//     age: 56,
-//     rating: 2,
-//     firstName: 'Cara',
-//     lastName: 'Mccarthy',
-//     phone: '(883) 512-2259',
-//     email: 'cara.mccarthy@earbang.ca',
-//     registered_at: '2014-04-25',
-//     available_from: '2021-06-13',
-//     description:
-//       'Reprehenderit consectetur ullamco aliquip reprehenderit do voluptate. Laborum exercitation nulla reprehenderit minim. Aliquip dolor elit adipisicing consectetur officia. Fugiat commodo id sint esse proident non dolor.',
-//     images: {
-//       thumbnail: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=256x256',
-//       medium: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=327x327',
-//     },
-//     skills: ['Sweeping', 'Infection control', 'Polishing'],
-//     id: 1,
+// {
+//   age: 56,
+//   rating: 2,
+//   firstName: 'Cara',
+//   lastName: 'Mccarthy',
+//   phone: '(883) 512-2259',
+//   email: 'cara.mccarthy@earbang.ca',
+//   registered_at: '2014-04-25',
+//   available_from: '2021-06-13',
+//   description:
+//     'Reprehenderit consectetur ullamco aliquip reprehenderit do voluptate. Laborum exercitation nulla reprehenderit minim. Aliquip dolor elit adipisicing consectetur officia. Fugiat commodo id sint esse proident non dolor.',
+//   images: {
+//     thumbnail: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=256x256',
+//     medium: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=327x327',
 //   },
-//   {
-//     age: 48,
-//     rating: 1,
-//     firstName: 'Ayala',
-//     lastName: 'Mcclain',
-//     phone: '(856) 505-2278',
-//     email: 'ayala.mcclain@plexia.biz',
-//     registered_at: '2017-02-20',
-//     available_from: '2021-07-24',
-//     description:
-//       'Nulla ipsum aute non elit nisi consequat culpa sit ex laboris proident voluptate. Incididunt enim exercitation fugiat cillum Lorem non non. Laboris fugiat veniam nisi et dolor aliqua proident Lorem. Minim eiusmod fugiat ut minim sint adipisicing.',
-//     images: {
-//       thumbnail: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=256x256',
-//       medium: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=327x327',
-//     },
-//     skills: ['Vacuuming', 'Deep cleaning', 'Sweeping'],
-//     id: 2,
+//   skills: ['Sweeping', 'Infection control', 'Polishing'],
+//   id: 1,
+// },
+// {
+//   age: 48,
+//   rating: 1,
+//   firstName: 'Ayala',
+//   lastName: 'Mcclain',
+//   phone: '(856) 505-2278',
+//   email: 'ayala.mcclain@plexia.biz',
+//   registered_at: '2017-02-20',
+//   available_from: '2021-07-24',
+//   description:
+//     'Nulla ipsum aute non elit nisi consequat culpa sit ex laboris proident voluptate. Incididunt enim exercitation fugiat cillum Lorem non non. Laboris fugiat veniam nisi et dolor aliqua proident Lorem. Minim eiusmod fugiat ut minim sint adipisicing.',
+//   images: {
+//     thumbnail: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=256x256',
+//     medium: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=327x327',
 //   },
-//   {
-//     age: 22,
-//     rating: 3,
-//     firstName: 'Clements',
-//     lastName: 'Mccoy',
-//     phone: '(827) 582-2958',
-//     email: 'clements.mccoy@pearlessa.me',
-//     registered_at: '2018-09-10',
-//     available_from: '2021-10-26',
-//     description:
-//       'Excepteur deserunt commodo dolor Lorem. Et eu pariatur ea ipsum minim nostrud tempor officia. Exercitation labore magna exercitation magna ullamco. Pariatur aliquip proident magna anim.',
-//     images: {
-//       thumbnail: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=256x256',
-//       medium: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=327x327',
-//     },
-//     skills: ['Vacuuming', 'Deep cleaning', 'Dusting'],
-//     id: 3,
+//   skills: ['Vacuuming', 'Deep cleaning', 'Sweeping'],
+//   id: 2,
+// },
+// {
+//   age: 22,
+//   rating: 3,
+//   firstName: 'Clements',
+//   lastName: 'Mccoy',
+//   phone: '(827) 582-2958',
+//   email: 'clements.mccoy@pearlessa.me',
+//   registered_at: '2018-09-10',
+//   available_from: '2021-10-26',
+//   description:
+//     'Excepteur deserunt commodo dolor Lorem. Et eu pariatur ea ipsum minim nostrud tempor officia. Exercitation labore magna exercitation magna ullamco. Pariatur aliquip proident magna anim.',
+//   images: {
+//     thumbnail: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=256x256',
+//     medium: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=327x327',
 //   },
+//   skills: ['Vacuuming', 'Deep cleaning', 'Dusting'],
+//   id: 3,
+// },
 // ]

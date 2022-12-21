@@ -1,0 +1,131 @@
+@import './variables/main.scss';
+.sidebar-container {
+  max-width: 256px;
+  margin-left: 30px;
+  border: 1px solid $neutral-white;
+  border-radius: 8px;
+}
+
+.inner-sidebar-container {
+  margin: 24px;
+  // display: flex;
+  // flex-direction: column;
+  // flex-wrap: wrap;
+}
+
+.flex-clear {
+  display: flex;
+  justify-content: space-between;
+  font-family: $lato-font;
+  p {
+    font-size: 14px;
+    color: rgba(19, 19, 19, 0.4);
+  }
+  button {
+    color: $red;
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.btn-display-flex {
+  display: flex;
+}
+
+.btn-display-none {
+  display: none;
+}
+
+.input-container,
+.date-input-cont {
+  input {
+    max-width: 100%;
+    font-family: $lato-font;
+    font-weight: 400;
+    font-size: 16px;
+    border: 1px solid rgba(19, 19, 19, 0.2);
+    border-radius: 99px;
+    padding-left: 24px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: $input-bg;
+    margin-top: 8px;
+    outline: none;
+  }
+}
+
+.skills-container,
+.rating-container,
+.availability-container {
+  margin-top: 24px;
+}
+
+.skills-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.skill-container {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  label {
+    font-weight: 400;
+    font-size: 16px;
+    font-family: $lato-font;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  input {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.show-all-container button {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  justify-content: flex-start;
+  border: none;
+  margin-top: 8px;
+  padding: 0;
+  color: $default;
+  font-family: $lato-font;
+  font-weight: 500;
+  font-size: 14px;
+  img {
+    margin-right: 16px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: $grey-hover;
+  }
+}
+
+.clear-all-btn-cont {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  button {
+    color: $light-green;
+    border: none;
+    background-color: transparent;
+    font-family: $lato-font;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.4s;
+    &:hover {
+      cursor: pointer;
+      color: $green;
+    }
+  }
+}

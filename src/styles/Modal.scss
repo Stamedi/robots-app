@@ -1,0 +1,124 @@
+@import './variables/main.scss';
+
+.top-modal {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid $top-border-modal;
+  padding: 18px;
+  h6 {
+    font-weight: 700;
+    font-size: 19px;
+    font-family: $lora-font;
+  }
+
+  img {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.modal-body-cont {
+  display: flex;
+  padding: 24px;
+}
+
+.left-modal {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.header-modal {
+  h3 {
+    font-weight: 700;
+    font-size: 33px;
+    font-family: $lora-font;
+  }
+}
+
+.name-green-btn-container {
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  p {
+    color: $white;
+    font-weight: 400;
+    font-size: 14px;
+    background: $forest-green;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: 16px;
+    font-family: $lato-font;
+    text-align: center;
+    letter-spacing: 0.4px;
+  }
+}
+
+.subhead-modal {
+  font-weight: 400;
+  font-size: 14px;
+  font-family: $lato-font;
+  margin-top: 24px;
+  color: $grey;
+}
+
+.body-text-modal {
+  font-weight: 400;
+  font-size: 16px;
+  font-family: $lato-font;
+  margin-top: 4px;
+
+  img {
+    margin-right: 6px;
+  }
+}
+
+.skills-modal {
+  ul {
+    list-style: none;
+
+    li::before {
+      content: url('../assets/images/bulletpoint.svg');
+      color: $grey;
+      margin-right: 10px;
+      margin-left: -35px;
+    }
+    li {
+      margin-top: 4px;
+    }
+  }
+}
+
+.right-modal {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  button {
+    margin-top: 24px;
+    height: 48px;
+    background-color: $light-green;
+    color: $white;
+    border: none;
+    border-radius: 99px;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: $lato-font;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      cursor: pointer;
+    }
+    img {
+      margin-right: 10px;
+    }
+  }
+}
+
+.robot-img-modal {
+  background-color: $neutral-white;
+  border-radius: 8px;
+}
