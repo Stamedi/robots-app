@@ -66,8 +66,13 @@ const Main = () => {
           return { ...checkbox, checked: false };
         })
       );
-      setFilteredRobots(robots);
+    } else if (name === 'rating') {
+      setCurrentRating(null);
+    } else if (name === 'date') {
+      setStartDate(null);
     }
+
+    setFilteredRobots(robots);
   };
 
   const handleClearAll = () => {
@@ -77,8 +82,8 @@ const Main = () => {
         return { ...checkbox, checked: false };
       })
     );
-    // setCheckedFilter([]);
     setCurrentRating(null);
+    setStartDate(null);
   };
 
   useEffect(() => {
