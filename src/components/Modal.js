@@ -7,6 +7,7 @@ import cart_white from '../assets/images/cart_white.svg';
 import phone from '../assets/images/phone.svg';
 import mail from '../assets/images/mail.svg';
 import '../styles/Modal.scss';
+import moment from 'moment/moment';
 
 ReactModal.setAppElement('#root');
 const Modal = ({ openModal, setOpenModal }) => {
@@ -44,7 +45,7 @@ const Modal = ({ openModal, setOpenModal }) => {
           <div className="modal-body-cont">
             <div className="left-modal">
               <div className="header-modal">
-                <div className="raiting-container">
+                <div className="rating-container">
                   {Array.from(Array(5), (e, i) => {
                     if (i < openModal.robot.rating) {
                       // eslint-disable-next-line jsx-a11y/alt-text
@@ -68,7 +69,7 @@ const Modal = ({ openModal, setOpenModal }) => {
               </div>
               <div className="registered-at-modal">
                 <p className="subhead-modal">Registered at</p>
-                <p className="body-text-modal">{openModal.robot.registered_at}</p>
+                <p className="body-text-modal">{moment(openModal.robot.registered_at).format('MM.DD.yyyy')}</p>
               </div>
               <div className="skills-modal">
                 <p className="subhead-modal">Skills</p>

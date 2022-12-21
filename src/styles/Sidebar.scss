@@ -89,6 +89,15 @@
   }
 }
 
+.rating-stars {
+  margin-top: 10px;
+  img {
+    margin-right: 8px;
+    width: 20px;
+    height: auto;
+  }
+}
+
 .show-all-container button {
   display: flex;
   align-items: center;

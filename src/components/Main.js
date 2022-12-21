@@ -5,7 +5,7 @@ import star_filled from '../assets/images/star_filled.svg';
 import '../styles/Main.scss';
 import Modal from './Modal';
 import Sidebar from './Sidebar';
-// import data from '../data/data-v2.json';
+import data from '../data/data-v2.json';
 
 const Main = () => {
   const [checkboxes, setCheckboxes] = useState([
@@ -21,72 +21,18 @@ const Main = () => {
     { id: '10', name: 'Polishing', checked: false },
   ]);
   // const [filters, setFilters] = useState([]);
-  const [checkedFilter, setCheckedFilter] = useState([]);
+  // const [checkedFilter, setCheckedFilter] = useState([]);
   const [searchFilter, setSearchFilter] = useState('');
   const [showAllSidebar, setShowAllSidebar] = useState(false);
   const [loadMore, setLoadMore] = useState(false);
-  const [robots] = useState([
-    {
-      age: 56,
-      rating: 2,
-      firstName: 'Cara',
-      lastName: 'Mccarthy',
-      phone: '(883) 512-2259',
-      email: 'cara.mccarthy@earbang.ca',
-      registered_at: '2014-04-25',
-      available_from: '2021-06-13',
-      description:
-        'Reprehenderit consectetur ullamco aliquip reprehenderit do voluptate. Laborum exercitation nulla reprehenderit minim. Aliquip dolor elit adipisicing consectetur officia. Fugiat commodo id sint esse proident non dolor.',
-      images: {
-        thumbnail: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=256x256',
-        medium: 'https://robohash.org/zg87yx8nsqrl5a8y.png/?set=set1&size=327x327',
-      },
-      skills: ['Sweeping', 'Infection control', 'Polishing'],
-      id: 1,
-    },
-    {
-      age: 48,
-      rating: 1,
-      firstName: 'Ayala',
-      lastName: 'Mcclain',
-      phone: '(856) 505-2278',
-      email: 'ayala.mcclain@plexia.biz',
-      registered_at: '2017-02-20',
-      available_from: '2021-07-24',
-      description:
-        'Nulla ipsum aute non elit nisi consequat culpa sit ex laboris proident voluptate. Incididunt enim exercitation fugiat cillum Lorem non non. Laboris fugiat veniam nisi et dolor aliqua proident Lorem. Minim eiusmod fugiat ut minim sint adipisicing.',
-      images: {
-        thumbnail: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=256x256',
-        medium: 'https://robohash.org/iy84628fu0482qra.png/?set=set1&size=327x327',
-      },
-      skills: ['Vacuuming', 'Deep cleaning', 'Sweeping'],
-      id: 2,
-    },
-    {
-      age: 22,
-      rating: 3,
-      firstName: 'Clements',
-      lastName: 'Mccoy',
-      phone: '(827) 582-2958',
-      email: 'clements.mccoy@pearlessa.me',
-      registered_at: '2018-09-10',
-      available_from: '2021-10-26',
-      description:
-        'Excepteur deserunt commodo dolor Lorem. Et eu pariatur ea ipsum minim nostrud tempor officia. Exercitation labore magna exercitation magna ullamco. Pariatur aliquip proident magna anim.',
-      images: {
-        thumbnail: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=256x256',
-        medium: 'https://robohash.org/hj0o3es7bac84foh.png/?set=set1&size=327x327',
-      },
-      skills: ['Vacuuming', 'Deep cleaning', 'Dusting'],
-      id: 3,
-    },
-  ]);
+  const [robots] = useState(data);
   const [filteredRobots, setFilteredRobots] = useState(robots);
   const [startDate, setStartDate] = useState(null);
   const [openModal, setOpenModal] = useState({ value: false, robot: null });
+  const [currentRating, setCurrentRating] = useState(null);
+  const [resultsFound, setResultsFound] = useState(false);
 
   const handleSearch = (event) => {
-    event.preventDefault();
     setSearchFilter(event.target.value);
   };
 
@@ -103,15 +49,10 @@ const Main = () => {
         }
       });
     });
+  };
 
-    let updatedList = [...checkedFilter];
-    if (event.target.checked) {
-      updatedList = [...checkedFilter, event.target.name];
-    } else {
-      updatedList.splice(checkedFilter.indexOf(event.target.name), 1);
-    }
-
-    setCheckedFilter(updatedList);
+  const handleRating = (value) => {
+    setCurrentRating(value);
   };
 
   const handleClear = (event) => {
@@ -130,15 +71,47 @@ const Main = () => {
   };
 
   const handleClearAll = () => {
+    setSearchFilter('');
     setCheckboxes(
       checkboxes.map((checkbox) => {
         return { ...checkbox, checked: false };
       })
     );
-    setCheckedFilter([]);
-    setSearchFilter('');
-    setFilteredRobots(robots);
+    // setCheckedFilter([]);
+    setCurrentRating(null);
   };
+
+  useEffect(() => {
+    let updatedList = robots;
+
+    // Sorting by date descending
+    updatedList = updatedList.sort((a, b) => a.registered_at < b.registered_at);
+
+    // Filter with searchbar
+    if (searchFilter.length > 0) {
+      updatedList = updatedList.filter((robot) => robot.firstName.toLowerCase().includes(searchFilter.toLowerCase()));
+    }
+
+    // Filter with checkboxes
+    const skillsChecked = checkboxes.filter((skill) => skill.checked).map((skill) => skill.name);
+
+    if (skillsChecked.length !== 0) {
+      updatedList = updatedList.filter((robot) => robot.skills.some((skill) => skillsChecked.includes(skill)));
+    }
+
+    // Filter with star rating
+    if (currentRating) {
+      updatedList = updatedList.filter((robot) => robot.rating === currentRating);
+    }
+
+    if (startDate) {
+      console.log(startDate);
+    }
+
+    setFilteredRobots(updatedList);
+
+    !updatedList.length ? setResultsFound(false) : setResultsFound(true);
+  }, [searchFilter, checkboxes, currentRating, robots, startDate]);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -149,43 +122,47 @@ const Main = () => {
   //   fetchData();
   // }, []);
 
-  useEffect(() => {
-    setFilteredRobots(filteredRobots.sort((a, b) => a.date > b.date));
-  }, [filteredRobots]);
+  // useEffect(() => {
+  //   setRobots(robots.sort((a, b) => a.registered_at < b.registered_at));
+  // }, [robots]);
 
-  useEffect(() => {
-    // if (searchFilter === '') {
-    //   setFilteredRobots(robots);
-    // }
-    if (searchFilter.length > 0) {
-      setFilteredRobots(robots.filter((robot) => robot.firstName.toLowerCase().includes(searchFilter.toLowerCase())));
-    }
-    // console.log(searchFilter);
-    // if (searchFilter.length > 0) {
-    //   if (robots) {
-    //     const filteredItems = robots.filter((robot) => robot.firstName.match(searchFilter));
-    //     setFilteredRobots(filteredItems);
-    //   }
-    // } else {
-    //   setFilteredRobots(robots);
-    // }
+  // useEffect(() => {
+  //   // if (searchFilter === '') {
+  //   //   setFilteredRobots(robots);
+  //   // }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchFilter]);
-  useEffect(() => {
-    if (checkedFilter.length !== 0) {
-      const filteredRobotsArr = robots.filter((robot) => robot.skills.some((skill) => checkedFilter.includes(skill)));
-      setFilteredRobots(filteredRobotsArr);
-    } else {
-      setFilteredRobots(robots);
-    }
-  }, [checkedFilter, robots]);
+  //   // if (updatedList.length > 0) {
+  //   //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   //   updatedList = updatedList.filter((robot) => robot.firstName.toLowerCase().includes(searchFilter.toLowerCase()));
+  //   // }
+
+  //   // console.log(searchFilter);
+  //   // if (searchFilter.length > 0) {
+  //   //   if (robots) {
+  //   //     const filteredItems = robots.filter((robot) => robot.firstName.match(searchFilter));
+  //   //     setFilteredRobots(filteredItems);
+  //   //   }
+  //   // } else {
+  //   //   setFilteredRobots(robots);
+  //   // }
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [searchFilter]);
+
+  // useEffect(() => {
+  //   if (checkedFilter.length !== 0) {
+  //     const filteredRobotsArr = robots.filter((robot) => robot.skills.some((skill) => checkedFilter.includes(skill)));
+  //     setFilteredRobots(filteredRobotsArr);
+  //   } else {
+  //     setFilteredRobots(robots);
+  //   }
+  // }, [checkedFilter, robots]);
 
   return (
     <main>
       <Modal openModal={openModal} setOpenModal={setOpenModal} />
       <div className="inner-container-main">
-        {filteredRobots.length === 0 ? (
+        {!resultsFound ? (
           <div className="robots-container">
             <img src={search} alt="search icon" />
             <h3>No results</h3>
@@ -200,7 +177,7 @@ const Main = () => {
                   <div className="card-img-container">
                     <img src={robot.images.thumbnail} alt="" />
                   </div>
-                  <div className="raiting-container">
+                  <div className="rating-container">
                     {Array.from(Array(5), (e, i) => {
                       if (i < robot.rating) {
                         // eslint-disable-next-line jsx-a11y/alt-text
@@ -232,6 +209,9 @@ const Main = () => {
           handleClearAll={handleClearAll}
           startDate={startDate}
           setStartDate={setStartDate}
+          handleRating={handleRating}
+          currentRating={currentRating}
+          setCurrentRating={setCurrentRating}
         />
       </div>
     </main>
