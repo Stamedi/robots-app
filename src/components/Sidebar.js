@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import arrow_down from '../assets/images/arrow_down.svg';
 import arrow_up from '../assets/images/arrow_up.svg';
 import star_empty from '../assets/images/star.svg';
-import star_filled from '../assets/images/star_filled.svg';
+import star_filled_green from '../assets/images/star_filled_green.svg';
 import '../styles/Sidebar.scss';
 const Sidebar = ({
   searchFilter,
@@ -40,7 +40,15 @@ const Sidebar = ({
         <div className="skills-container">
           <div className="flex-clear">
             <p>By skills</p>
-            <button name="skills" onClick={handleClear}>
+            <button
+              className={
+                checkboxes.filter((skill) => skill.checked).map((skill) => skill.name).length > 0
+                  ? 'btn-display-flex'
+                  : 'btn-display-none'
+              }
+              name="skills"
+              onClick={handleClear}
+            >
               Clear
             </button>
           </div>
@@ -65,7 +73,11 @@ const Sidebar = ({
         <div className="rating-container">
           <div className="flex-clear">
             <p>By rating</p>
-            <button name="rating" onClick={handleClear}>
+            <button
+              className={currentRating ? 'btn-display-flex' : 'btn-display-none'}
+              name="rating"
+              onClick={handleClear}
+            >
               Clear
             </button>
           </div>
@@ -73,7 +85,7 @@ const Sidebar = ({
             {rating.map((star) => (
               <img
                 key={star.value}
-                src={currentRating >= star.value ? star_filled : star_empty}
+                src={currentRating >= star.value ? star_filled_green : star_empty}
                 onClick={() => handleRating(star.value)}
                 alt="star"
               ></img>
@@ -82,14 +94,13 @@ const Sidebar = ({
         </div>
         <div className="availability-container">
           <div className="flex-clear">
-            <p>By availability</p>{' '}
-            <button name="date" onClick={handleClear}>
+            <p>By availability</p>
+            <button className={startDate ? 'btn-display-flex' : 'btn-display-none'} name="date" onClick={handleClear}>
               Clear
             </button>
           </div>
           <div className="date-input-cont">
             <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="dd.MM.yyyy" />
-            {/* <input type="text" placeholder="Available from" /> */}
           </div>
         </div>
         <div className="clear-all-btn-cont">

@@ -9,6 +9,7 @@
     font-weight: 700;
     font-size: 19px;
     font-family: $lora-font;
+    padding-right: 20px;
   }
 
   img {
@@ -21,6 +22,11 @@
 .modal-body-cont {
   display: flex;
   padding: 24px;
+  @media screen and (max-width: 1000px) {
+    flex-wrap: wrap;
+    // align-items: center;
+    justify-content: center;
+  }
 }
 
 .left-modal {
@@ -41,6 +47,7 @@
   padding-top: 10px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   p {
     color: $white;
     font-weight: 400;
@@ -52,6 +59,13 @@
     font-family: $lato-font;
     text-align: center;
     letter-spacing: 0.4px;
+  }
+
+  @media screen and (max-width: 481px) {
+    p {
+      margin-top: 10px;
+      margin-left: 0;
+    }
   }
 }
 
@@ -94,7 +108,7 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-
+  margin-left: 24px;
   button {
     margin-top: 24px;
     height: 48px;
@@ -109,16 +123,27 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    transition: 0.4s;
     &:hover {
       cursor: pointer;
+      background-color: $green;
     }
     img {
       margin-right: 10px;
     }
+  }
+
+  @media screen and (max-width: 1000px) {
+    margin-top: 30px;
+    margin-left: 0;
+    width: auto;
   }
 }
 
 .robot-img-modal {
   background-color: $neutral-white;
   border-radius: 8px;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+  }
 }

@@ -16,6 +16,21 @@ header {
     font-size: 48px;
     max-width: 544px;
   }
+
+  @media screen and (max-width: 916px) {
+    padding: 0 30px;
+    h1 {
+      padding-top: 20px;
+      font-size: 36px;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    padding: 0 30px;
+    h1 {
+      padding-top: 0px;
+      font-size: 24px;
+    }
+  }
 }
 
 nav {
@@ -55,6 +70,8 @@ nav {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
     li {
       padding-right: 24px;
       &:hover {
@@ -70,6 +87,27 @@ nav {
     background-color: transparent;
     border-radius: 99px;
     border: 2px solid $white;
+  }
+
+  @media screen and (max-width: 916px) {
+    padding-top: 20px;
+
+    ul {
+      li {
+        padding-right: 16px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 390px) {
+    ul {
+      li {
+        margin-top: 15px;
+      }
+    }
+    button {
+      margin-top: 15px;
+    }
   }
 }
 
@@ -91,4 +129,38 @@ nav {
 
 .nav-item-green {
   color: $green;
+}
+
+.robot-header-container-flex {
+  display: flex;
+  justify-content: space-evenly;
+  // img {
+  //   position: absolute;
+  // }
+}
+
+@media screen and (max-width: 1320px) {
+  .robot-header-container-none {
+    display: none;
+  }
+}
+
+.robot-bg-container {
+  transform: translate(-166px, -160px);
+  position: relative;
+  img {
+    position: absolute;
+  }
+}
+
+.robot-bg-header {
+  transform: translate(160px, 20px);
+}
+
+.robot-left-container {
+  transform: translate(-490px, -16px);
+  position: relative;
+  img {
+    position: absolute;
+  }
 }

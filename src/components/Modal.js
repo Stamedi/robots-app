@@ -46,13 +46,11 @@ const Modal = ({ openModal, setOpenModal }) => {
             <div className="left-modal">
               <div className="header-modal">
                 <div className="rating-container">
-                  {Array.from(Array(5), (e, i) => {
-                    if (i < openModal.robot.rating) {
-                      // eslint-disable-next-line jsx-a11y/alt-text
-                      return <img src={star_filled} key={i} />;
+                  {Array.from(Array(5), (element, index) => {
+                    if (index < openModal.robot.rating) {
+                      return <img src={star_filled} key={index} alt="star_filled" />;
                     } else {
-                      // eslint-disable-next-line jsx-a11y/alt-text
-                      return <img src={star} key={i} />;
+                      return <img src={star} key={index} alt="star_empty" />;
                     }
                   })}
                 </div>

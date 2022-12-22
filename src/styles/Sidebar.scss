@@ -1,9 +1,12 @@
 @import './variables/main.scss';
 .sidebar-container {
   max-width: 256px;
-  margin-left: 30px;
+  margin-left: 15px;
   border: 1px solid $neutral-white;
   border-radius: 8px;
+  @media screen and (max-width: 1200px) {
+    position: relative;
+  }
 }
 
 .inner-sidebar-container {
@@ -28,6 +31,7 @@
 
     &:hover {
       cursor: pointer;
+      color: $black;
     }
   }
 }
@@ -95,6 +99,10 @@
     margin-right: 8px;
     width: 20px;
     height: auto;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.5;
+    }
   }
 }
 
