@@ -106,9 +106,10 @@
 
 .skill-container {
   margin-top: 8px;
-  display: flex;
-  align-items: center;
+  display: inline-block;
+  // position: relative;
   label {
+    padding-left: 11px;
     font-weight: 400;
     font-size: 16px;
     font-family: $lato-font;
@@ -117,11 +118,58 @@
     }
   }
   input {
+    appearance: none;
+    height: 16px;
+    width: 16px;
+    background-color: $white;
+    border: 2px solid $black;
+    border-radius: 3px;
     &:hover {
       cursor: pointer;
     }
   }
+  input[type='checkbox']:checked {
+    background-color: $light-green;
+    border: none;
+  }
+
+  input[type='checkbox']:checked::before {
+    position: absolute;
+    // left: 0;
+    // top: 50%;
+    height: 5.5px;
+    width: 1.5px;
+    background-color: $white;
+    content: '';
+    transform: translate(4px, 6px) rotate(-45deg);
+  }
+
+  input[type='checkbox']:checked::after {
+    position: absolute;
+    height: 1.5px;
+    width: 10px;
+    background-color: $white;
+    content: '';
+    transform: translate(5px, 6px) rotate(-45deg);
+  }
+
+  input[type='checkbox']:checked:hover {
+    background-color: $green;
+    border: none;
+  }
+  input[type='checkbox']:hover {
+    border: 2px solid rgba(19, 19, 19, 0.5);
+  }
 }
+
+// .checkmark {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   height: 18px;
+//   width: 18px;
+//   background-color: $light-green;
+// }
 
 .rating-stars {
   margin-top: 10px;
