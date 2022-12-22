@@ -169,7 +169,7 @@ Sidebar.propTypes = {
   checkboxes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   setCheckboxes: PropTypes.func.isRequired,
   handleClearAll: PropTypes.func.isRequired,
-  startDate: PropTypes.instanceOf(Date).isRequired,
+  startDate: PropTypes.instanceOf(Date),
   setStartDate: PropTypes.func.isRequired,
   handleRating: PropTypes.func.isRequired,
   currentRating: PropTypes.number.isRequired,
