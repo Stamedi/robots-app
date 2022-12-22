@@ -1,1 +1,4 @@
-To run the project locally type "npm run start" or "yarn start" if you are using yarn
+Run website locally:
+1. Install node modules by running "npm install".
+2. Type "npm run start" if you have Node installed or "yarn start" if you are using yarn.
+
