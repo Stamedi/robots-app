@@ -11,6 +11,7 @@ import moment from 'moment/moment';
 
 ReactModal.setAppElement('#root');
 const Modal = ({ openModal, setOpenModal }) => {
+  const { value, robot } = openModal;
   return (
     <ReactModal
       style={{
@@ -21,6 +22,7 @@ const Modal = ({ openModal, setOpenModal }) => {
           bottom: 0,
           margin: 'auto',
           background: 'rgba(19, 19, 19, 0.4)',
+          zIndex: 3,
         },
         content: {
           maxWidth: '928px',
@@ -31,14 +33,14 @@ const Modal = ({ openModal, setOpenModal }) => {
           border: '1px solid #F3F3F3',
         },
       }}
-      isOpen={openModal.value}
+      isOpen={value}
       onRequestClose={() => setOpenModal({ value: false, robot: null })}
     >
-      {openModal.robot && (
+      {robot && (
         <>
           <div className="top-modal">
             <h6>
-              More about {openModal.robot.firstName} {openModal.robot.lastName}
+              More about {robot.firstName} {robot.lastName}
             </h6>
             <img src={close_btn} alt="close_btn" onClick={() => setOpenModal({ value: false, robot: null })} />
           </div>
@@ -47,7 +49,7 @@ const Modal = ({ openModal, setOpenModal }) => {
               <div className="header-modal">
                 <div className="rating-container">
                   {Array.from(Array(5), (element, index) => {
-                    if (index < openModal.robot.rating) {
+                    if (index < robot.rating) {
                       return <img src={star_filled} key={index} alt="star_filled" />;
                     } else {
                       return <img src={star} key={index} alt="star_empty" />;
@@ -56,23 +58,23 @@ const Modal = ({ openModal, setOpenModal }) => {
                 </div>
                 <div className="name-green-btn-container">
                   <h3>
-                    {openModal.robot.firstName} {openModal.robot.lastName}
+                    {robot.firstName} {robot.lastName}
                   </h3>
                   <p>Available</p>
                 </div>
               </div>
               <div className="about-modal">
                 <p className="subhead-modal">About</p>
-                <p className="body-text-modal">{openModal.robot.description}</p>
+                <p className="body-text-modal">{robot.description}</p>
               </div>
               <div className="registered-at-modal">
                 <p className="subhead-modal">Registered at</p>
-                <p className="body-text-modal">{moment(openModal.robot.registered_at).format('MM.DD.yyyy')}</p>
+                <p className="body-text-modal">{moment(robot.registered_at).format('MM.DD.yyyy')}</p>
               </div>
               <div className="skills-modal">
                 <p className="subhead-modal">Skills</p>
                 <ul className="body-text-modal">
-                  {openModal.robot.skills.map((skill) => (
+                  {robot.skills.map((skill) => (
                     <li key={skill}>{skill}</li>
                   ))}
                 </ul>
@@ -81,16 +83,16 @@ const Modal = ({ openModal, setOpenModal }) => {
                 <p className="subhead-modal">Contact information</p>
                 <p className="body-text-modal">
                   <img src={phone} alt="phone" />
-                  {openModal.robot.phone}
+                  {robot.phone}
                 </p>
                 <p className="body-text-modal">
                   <img src={mail} alt="mail" />
-                  {openModal.robot.email}
+                  {robot.email}
                 </p>
               </div>
             </div>
             <div className="right-modal">
-              <img className="robot-img-modal" src={openModal.robot.images.medium} alt="" />
+              <img className="robot-img-modal" src={robot.images.medium} alt="" />
               <button>
                 <img src={cart_white} alt="cart_white" /> Add to cart
               </button>

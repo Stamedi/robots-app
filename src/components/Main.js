@@ -34,7 +34,7 @@ const Main = () => {
     setSearchFilter(event.target.value);
   };
 
-  const handleChange = (event) => {
+  const handleChangeCheckbox = (event) => {
     setCheckboxes((prevState) => {
       return prevState.map((checkbox) => {
         if (checkbox.name === event.target.name) {
@@ -53,26 +53,6 @@ const Main = () => {
     setCurrentRating(value);
   };
 
-  const handleClear = (event) => {
-    const { name } = event.target;
-
-    if (name === 'name') {
-      setSearchFilter('');
-    } else if (name === 'skills') {
-      setCheckboxes(
-        checkboxes.map((checkbox) => {
-          return { ...checkbox, checked: false };
-        })
-      );
-    } else if (name === 'rating') {
-      setCurrentRating(null);
-    } else if (name === 'date') {
-      setStartDate(null);
-    }
-
-    setFilteredRobots(robots);
-  };
-
   const handleClearAll = () => {
     setSearchFilter('');
     setCheckboxes(
@@ -87,12 +67,12 @@ const Main = () => {
   useEffect(() => {
     let updatedList = robots;
 
-    // Filter with searchbar
+    // Filter by searchbar
     if (searchFilter.length > 0) {
       updatedList = updatedList.filter((robot) => robot.firstName.toLowerCase().includes(searchFilter.toLowerCase()));
     }
 
-    // Filter with checkboxes
+    // Filter by checkboxes
     // An array of checkbox names that are currently checked
     const skillsChecked = checkboxes.filter((skill) => skill.checked).map((skill) => skill.name);
 
@@ -100,7 +80,7 @@ const Main = () => {
       return skillsChecked.every((skill) => robot.skills.includes(skill));
     });
 
-    // Filter with star rating
+    // Filter by star rating
     if (currentRating) {
       updatedList = updatedList.filter((robot) => robot.rating === currentRating);
     }
@@ -181,12 +161,13 @@ const Main = () => {
           filteredRobots={filteredRobots}
           setFilteredRobots={setFilteredRobots}
           searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+          checkboxes={checkboxes}
+          setCheckboxes={setCheckboxes}
           showAllSidebar={showAllSidebar}
           setShowAllSidebar={setShowAllSidebar}
           handleSearch={handleSearch}
-          handleChange={handleChange}
-          handleClear={handleClear}
-          checkboxes={checkboxes}
+          handleChangeCheckbox={handleChangeCheckbox}
           handleClearAll={handleClearAll}
           startDate={startDate}
           setStartDate={setStartDate}
