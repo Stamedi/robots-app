@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import arrow_down from '../assets/images/arrow_down.svg';
 import arrow_up from '../assets/images/arrow_up.svg';
 import star_empty from '../assets/images/star.svg';
-import CalendarIcon from '../assets/images/star.svg';
+import CalendarIcon from '../assets/images/calendar_icon.svg';
 import star_filled_green from '../assets/images/star_filled_green.svg';
 import '../styles/Sidebar.scss';
 const Sidebar = ({
@@ -138,10 +138,8 @@ const Sidebar = ({
                   dateFormat="dd.MM.yyyy"
                   placeholderText="Available from"
                   showYearDropdown
-                  components={{
-                    OpenPickerIcon: CalendarIcon,
-                  }}
                 />
+                <img src={CalendarIcon} alt="" />
               </div>
             </div>
             {(searchFilter ||

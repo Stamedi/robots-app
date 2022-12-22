@@ -92,6 +92,13 @@
   }
 }
 
+.date-input-cont {
+  img {
+    position: relative;
+    transform: translate(165px, -35px);
+  }
+}
+
 .skills-container,
 .rating-container,
 .availability-container {
@@ -161,15 +168,6 @@
     border: 2px solid rgba(19, 19, 19, 0.5);
   }
 }
-
-// .checkmark {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   height: 18px;
-//   width: 18px;
-//   background-color: $light-green;
-// }
 
 .rating-stars {
   margin-top: 10px;
