@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 import star from '../assets/images/star.svg';
 import star_filled from '../assets/images/star_filled.svg';
@@ -102,6 +103,11 @@ const Modal = ({ openModal, setOpenModal }) => {
       )}
     </ReactModal>
   );
+};
+
+Modal.propTypes = {
+  openModal: PropTypes.object.isRequired,
+  setOpenModal: PropTypes.func.isRequired,
 };
 
 export default Modal;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import arrow_down from '../assets/images/arrow_down.svg';
@@ -104,7 +105,7 @@ const Sidebar = ({
                 <p>By rating</p>
                 <button
                   className={currentRating ? 'btn-display-flex' : 'btn-display-none'}
-                  onClick={() => setCurrentRating(null)}
+                  onClick={() => setCurrentRating(0)}
                 >
                   Clear
                 </button>
@@ -156,6 +157,23 @@ const Sidebar = ({
       )}
     </>
   );
+};
+
+Sidebar.propTypes = {
+  searchFilter: PropTypes.string.isRequired,
+  setSearchFilter: PropTypes.func.isRequired,
+  showAllSidebar: PropTypes.bool.isRequired,
+  setShowAllSidebar: PropTypes.func.isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  handleChangeCheckbox: PropTypes.func.isRequired,
+  checkboxes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  setCheckboxes: PropTypes.func.isRequired,
+  handleClearAll: PropTypes.func.isRequired,
+  startDate: PropTypes.instanceOf(Date).isRequired,
+  setStartDate: PropTypes.func.isRequired,
+  handleRating: PropTypes.func.isRequired,
+  currentRating: PropTypes.number.isRequired,
+  setCurrentRating: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

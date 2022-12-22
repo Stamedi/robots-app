@@ -27,7 +27,7 @@ const Main = () => {
   const [filteredRobots, setFilteredRobots] = useState(robots);
   const [startDate, setStartDate] = useState(null);
   const [openModal, setOpenModal] = useState({ value: false, robot: null });
-  const [currentRating, setCurrentRating] = useState(null);
+  const [currentRating, setCurrentRating] = useState(0);
   const [resultsFound, setResultsFound] = useState(false);
 
   const handleSearch = (event) => {
@@ -60,7 +60,7 @@ const Main = () => {
         return { ...checkbox, checked: false };
       })
     );
-    setCurrentRating(null);
+    setCurrentRating(0);
     setStartDate(null);
   };
 
