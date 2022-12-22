@@ -129,7 +129,11 @@ const Main = () => {
               {filteredRobots.map(
                 (robot, index) =>
                   index < loadMore && (
-                    <div className="card-container" key={robot.id}>
+                    <div
+                      className="card-container"
+                      key={robot.id}
+                      onClick={() => setOpenModal({ value: true, robot: robot })}
+                    >
                       <div className="card-img-container">
                         <img src={robot.images.thumbnail} alt="" />
                       </div>
@@ -143,7 +147,7 @@ const Main = () => {
                         })}
                       </div>
                       <h5>{robot.firstName}</h5>
-                      <button onClick={() => setOpenModal({ value: true, robot: robot })}>Learn more</button>
+                      <button>Learn more</button>
                     </div>
                   )
               )}
