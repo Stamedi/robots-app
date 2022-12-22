@@ -5,7 +5,7 @@ import star_filled from '../assets/images/star_filled.svg';
 import '../styles/Main.scss';
 import Modal from './Modal';
 import Sidebar from './Sidebar';
-import data from '../data/data-v2.json';
+// import data from '../data/data-v2.json';
 
 const Main = () => {
   const [checkboxes, setCheckboxes] = useState([
@@ -101,12 +101,22 @@ const Main = () => {
     // Filtering out the ones that don't have firstName to prevent errors that might occur later
     // Sorting by registered_at date descending
     const fetchData = async () => {
-      let promise = Promise.resolve(data);
-      promise.then((res) => {
-        const filterNoNames = res.filter((robot) => robot.firstName);
+      // let promise = Promise.resolve(data);
+      // promise.then((res) => {
+      // const filterNoNames = res.filter((robot) => robot.firstName);
+      // const sortDateDesc = filterNoNames.sort((a, b) => a.registered_at < b.registered_at);
+      // setRobots(sortDateDesc);
+      // });
+
+      try {
+        const response = await fetch('http://localhost:3000/data-v2.json');
+        const data = await response.json();
+        const filterNoNames = data.filter((robot) => robot.firstName);
         const sortDateDesc = filterNoNames.sort((a, b) => a.registered_at < b.registered_at);
         setRobots(sortDateDesc);
-      });
+      } catch (error) {
+        console.log('Something went wrong', error);
+      }
     };
 
     fetchData();

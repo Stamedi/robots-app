@@ -143,9 +143,14 @@ const Sidebar = ({
                 />
               </div>
             </div>
-            <div className="clear-all-btn-cont">
-              <button onClick={handleClearAll}>Clear all filters</button>
-            </div>
+            {(searchFilter ||
+              checkboxes.some((checkbox) => checkbox.checked === true) ||
+              currentRating ||
+              startDate) && (
+              <div className="clear-all-btn-cont">
+                <button onClick={handleClearAll}>Clear all filters</button>
+              </div>
+            )}
           </div>
         </div>
       )}
