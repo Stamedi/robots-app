@@ -43,22 +43,6 @@ const initialState = {
   },
 };
 
-// const checkedTheRating = () =>
-// const checkedTheStartDate = () =>
-
-// const newRobots = [...initialRobots];
-// const filteredByCheckbox = checkHasActiveSkills(newRobots)
-// const filteredByName = checkTheName(filteredByCheckbox)
-// const filteredByRating = checkTheRating(filteredByName)
-// const final = checkTheStartDate(filteredByRating)
-// setRobots(checkTheStartDate(checkTheRating(checkTheName(checkHasActiveSkills(newRobots)))))
-
-// const handleSearchName = (e) => {
-//   const filtered = checkTheName(e.target.value)
-
-//   setRobots(filtered);
-// }
-
 const filteredDataByName = (robots, searchVal) => {
   if (searchVal.length > 0) {
     const filterByName = robots.filter((robot) => robot.firstName.toLowerCase().includes(searchVal.toLowerCase()));
@@ -256,84 +240,6 @@ const Main = () => {
     dispatch({ type: ACTIONS.CLEAR_ALL });
   };
 
-  // const filteredDataByName = () => {
-  //   const { searchFilter } = state.activeFilters;
-  //   if (searchFilter.length > 0) {
-  //     const filterByName = state.robots.filter((robot) =>
-  //       robot.firstName.toLowerCase().includes(searchFilter.toLowerCase())
-  //     );
-  //     return filterByName;
-  //   } else {
-  //     return state.robots;
-  //   }
-  // };
-
-  // const filteredDataBySkills = () => {
-  //   let data = filteredDataByName();
-  //   const skillsChecked = state.activeFilters.checkboxes.filter((skill) => skill.checked).map((skill) => skill.name);
-  //   const filteredBySkill = data.filter((robot) => {
-  //     return skillsChecked.every((skill) => robot.skills.includes(skill));
-  //   });
-
-  //   return filteredBySkill;
-  // };
-
-  // const filteredDataByRating = () => {
-  //   let data = filteredDataBySkills();
-  //   const { rating } = state.activeFilters;
-
-  //   if (rating) {
-  //     return (data = data.filter((robot) => robot.rating === rating));
-  //   } else {
-  //     return data;
-  //   }
-  // };
-
-  // const filteredDataByDate = () => {
-  //   let data = filteredDataByRating();
-  //   const { startDate } = state.activeFilters;
-  //   if (startDate) {
-  //     const filteredData = data.filter((robot) => startDate - new Date(robot.available_from) < 0);
-  //     return filteredData;
-  //   } else {
-  //     return data;
-  //   }
-  // };
-
-  // const filteredData = filteredDataByDate();
-  // resultCheck();
-  // useEffect(() => {
-  //   let updatedList = state.filteredRobots;
-
-  //   // Filter by searchbar
-  //   // if (searchFilter.length > 0) {
-  //   //   updatedList = updatedList.filter((robot) => robot.firstName.toLowerCase().includes(searchFilter.toLowerCase()));
-  //   // }
-
-  //   // Filter by checkboxes
-  //   // An array of checkbox names that are currently checked
-  //   const skillsChecked = checkboxes.filter((skill) => skill.checked).map((skill) => skill.name);
-
-  //   updatedList = updatedList.filter((robot) => {
-  //     return skillsChecked.every((skill) => robot.skills.includes(skill));
-  //   });
-
-  //   // Filter by star rating
-  //   if (currentRating) {
-  //     updatedList = updatedList.filter((robot) => robot.rating === currentRating);
-  //   }
-
-  //   // Filter by available date
-  //   if (startDate) {
-  //     updatedList = updatedList.filter((robot) => startDate - new Date(robot.available_from) < 0);
-  //   }
-
-  //   setLoadMore(12);
-  //   // filteredRobots(updatedList);
-
-  //   !updatedList.length ? setResultsFound(false) : setResultsFound(true);
-  // }, [searchFilter, checkboxes, currentRating, startDate, state.filteredRobots]);
-
   useEffect(() => {
     // Fetching robots from data.json
     // Filtering out the ones that don't have firstName to prevent errors that might occur later
@@ -355,10 +261,6 @@ const Main = () => {
     !state.filteredRobots.length ? setResultsFound(false) : setResultsFound(true);
   }, [state.filteredRobots]);
 
-  // const resultCheck = (filteredData) => {
-  //   setLoadMore(12);
-  //   !data.length ? setResultsFound(false) : setResultsFound(true);
-  // };
   return (
     <main>
       <Modal openModal={openModal} setOpenModal={setOpenModal} />
