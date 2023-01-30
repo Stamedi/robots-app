@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ACTIONS } from './Main.js';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -8,23 +9,8 @@ import star_empty from '../assets/images/star.svg';
 import CalendarIcon from '../assets/images/calendar_icon.svg';
 import star_filled_green from '../assets/images/star_filled_green.svg';
 import '../styles/Sidebar.scss';
-const Sidebar = ({
-  searchFilter,
-  setSearchFilter,
-  showAllSidebar,
-  setShowAllSidebar,
-  handleSearch,
-  handleChangeCheckbox,
-  checkboxes,
-  setCheckboxes,
-  handleClearAll,
-  startDate,
-  setStartDate,
-  handleRating,
-  currentRating,
-  setCurrentRating,
-}) => {
-  const [rating] = useState([{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }]);
+const Sidebar = ({ state, showAllSidebar, setShowAllSidebar, handleClearAll, dispatch, handleSearch }) => {
+  const [ratingVals] = useState([{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -42,6 +28,7 @@ const Sidebar = ({
     };
   }, [windowWidth]);
 
+  const { searchFilter, checkboxes, rating, startDate } = state.activeFilters;
   return (
     <>
       <button className="sidebar-mobile-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
@@ -55,12 +42,19 @@ const Sidebar = ({
                 <p>By name</p>
                 <button
                   className={searchFilter.length > 0 ? 'btn-display-flex' : 'btn-display-none'}
-                  onClick={() => setSearchFilter('')}
+                  onClick={() => dispatch({ type: ACTIONS.CLEAR_SEARCH })}
                 >
                   Clear
                 </button>
               </div>
-              <input type="text" placeholder="Name" value={searchFilter} onChange={handleSearch} />
+              <input
+                type="text"
+                placeholder="Name"
+                value={searchFilter}
+                onChange={(event) =>
+                  dispatch({ type: ACTIONS.SEARCH_FILTER, payload: { searchVal: event.target.value } })
+                }
+              />
             </div>
             <div className="skills-container">
               <div className="flex-clear">
@@ -71,20 +65,22 @@ const Sidebar = ({
                       ? 'btn-display-flex'
                       : 'btn-display-none'
                   }
-                  onClick={() =>
-                    setCheckboxes(
-                      checkboxes.map((checkbox) => {
-                        return { ...checkbox, checked: false };
-                      })
-                    )
-                  }
+                  onClick={() => dispatch({ type: ACTIONS.CLEAR_CHECKBOXES })}
                 >
                   Clear
                 </button>
               </div>
               {checkboxes.slice(0, !showAllSidebar ? 4 : undefined).map(({ id, name, checked }) => (
                 <div key={id} className="skill-container">
-                  <input id={id} type="checkbox" name={name} onChange={handleChangeCheckbox} checked={checked} />
+                  <input
+                    id={id}
+                    type="checkbox"
+                    name={name}
+                    onChange={(event) =>
+                      dispatch({ type: ACTIONS.CHECKBOX_FILTER, payload: { checkboxName: event.target.name } })
+                    }
+                    checked={checked}
+                  />
                   <label htmlFor={id}>{name}</label>
                 </div>
               ))}
@@ -104,18 +100,21 @@ const Sidebar = ({
               <div className="flex-clear">
                 <p>By rating</p>
                 <button
-                  className={currentRating ? 'btn-display-flex' : 'btn-display-none'}
-                  onClick={() => setCurrentRating(0)}
+                  className={rating ? 'btn-display-flex' : 'btn-display-none'}
+                  onClick={() => dispatch({ type: ACTIONS.CLEAR_RATING })}
                 >
                   Clear
                 </button>
               </div>
               <div className="rating-stars">
-                {rating.map((star) => (
+                {ratingVals.map((star) => (
                   <img
                     key={star.value}
-                    src={currentRating >= star.value ? star_filled_green : star_empty}
-                    onClick={() => handleRating(star.value)}
+                    src={rating >= star.value ? star_filled_green : star_empty}
+                    onClick={
+                      () => dispatch({ type: ACTIONS.RATING_FILTER, payload: { rating: star.value } })
+                      // handleRating(setCurrentRating(star.value))
+                    }
                     alt="star"
                   ></img>
                 ))}
@@ -126,7 +125,7 @@ const Sidebar = ({
                 <p>By availability</p>
                 <button
                   className={startDate ? 'btn-display-flex' : 'btn-display-none'}
-                  onClick={() => setStartDate(null)}
+                  onClick={() => dispatch({ type: ACTIONS.CLEAR_DATE })}
                 >
                   Clear
                 </button>
@@ -134,7 +133,7 @@ const Sidebar = ({
               <div className="date-input-cont">
                 <DatePicker
                   selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={(date) => dispatch({ type: ACTIONS.DATE_FILTER, payload: { date } })}
                   dateFormat="dd.MM.yyyy"
                   placeholderText="Available from"
                   showYearDropdown
@@ -142,10 +141,7 @@ const Sidebar = ({
                 <img src={CalendarIcon} alt="" />
               </div>
             </div>
-            {(searchFilter ||
-              checkboxes.some((checkbox) => checkbox.checked === true) ||
-              currentRating ||
-              startDate) && (
+            {(searchFilter || checkboxes.some((checkbox) => checkbox.checked === true) || rating || startDate) && (
               <div className="clear-all-btn-cont">
                 <button onClick={handleClearAll}>Clear all filters</button>
               </div>
@@ -158,20 +154,11 @@ const Sidebar = ({
 };
 
 Sidebar.propTypes = {
-  searchFilter: PropTypes.string.isRequired,
-  setSearchFilter: PropTypes.func.isRequired,
   showAllSidebar: PropTypes.bool.isRequired,
   setShowAllSidebar: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
-  handleChangeCheckbox: PropTypes.func.isRequired,
-  checkboxes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  setCheckboxes: PropTypes.func.isRequired,
+  // handleSearch: PropTypes.func,
+  // handleChangeCheckbox: PropTypes.func.isRequired,
   handleClearAll: PropTypes.func.isRequired,
-  startDate: PropTypes.instanceOf(Date),
-  setStartDate: PropTypes.func.isRequired,
-  handleRating: PropTypes.func.isRequired,
-  currentRating: PropTypes.number.isRequired,
-  setCurrentRating: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
